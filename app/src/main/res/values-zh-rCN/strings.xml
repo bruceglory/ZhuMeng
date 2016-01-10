@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="drawer_psy">职业测评</string>
+    <!-- school_data info-->
+    <string name="school_academician1">院士</string>
+    <string name="school_master1">硕士点</string>
+    <string name="school_emphasis_subject1">重点学科</string>
+    <string name="school_doctoral1">博士点</string>
+
+    <!-- school detail info-->
+    <string name="default_school_name">清华大学</string>
+    <string name="default_school_address">北京</string>
+    <string name="school_belong">隶属：</string>
+    <string name="school_address">地址：</string>
+    <string name="school_tel">电话：</string>
+</resources>
