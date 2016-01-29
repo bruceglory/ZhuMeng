@@ -14,4 +14,16 @@
     <string name="school_belong">隶属：</string>
     <string name="school_address">地址：</string>
     <string name="school_tel">电话：</string>
+
+    <!-- score line -->
+    <string name="science">理科</string>
+    <string name="art_human_science">文科</string>
+    <string name="first_batch">第一批</string>
+    <string name="second_batch">第二批</string>
+    <string name="third_batch">第三批</string>
+    <string name="default_province">北京市</string>
+
+    <!-- major detail info-->
+    <string name="major_intro_tilte">专业概况</string>
+    <string name="major_des_title">专业解读</string>
 </resources>

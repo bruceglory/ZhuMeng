@@ -86,11 +86,11 @@ public class SchoolsFragment extends Fragment
     }
 
     private void initialize(){
-        initilizeData();
+        initializeData();
         initializeRecycler();
     }
 
-    private void initilizeData() {
+    private void initializeData() {
         schoolsHandler = new Handler(){
             @Override
             public void handleMessage(Message msg) {
@@ -109,7 +109,7 @@ public class SchoolsFragment extends Fragment
         linearLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        recyclerView.setOnScrollListener(recyclerViewScrollListener);
+        recyclerView.addOnScrollListener(recyclerViewScrollListener);
         schoolsAdapter = new SchoolsAdapter(schoolInfos);
         schoolsAdapter.setRecyclerListListener(this);
         recyclerView.setAdapter(schoolsAdapter);

@@ -29,7 +29,7 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:design:23.1.1'
     compile 'com.android.support:recyclerview-v7:21.+'
     compile 'com.android.support:cardview-v7:21.+'
@@ -39,9 +39,8 @@ dependencies {
     compile('com.mikepenz:materialdrawer:4.5.5@aar') {
         transitive = true;
     }
-
     compile 'com.android.support:support-v4:21.0.3'
-
     //avoscloud-sdk Îª LeanCloud»ù´¡°ü
     compile 'cn.leancloud.android:avoscloud-sdk:v3.+'
+    compile files('libs/jsoup-1.8.3.jar')
 }

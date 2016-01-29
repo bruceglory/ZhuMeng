@@ -22,6 +22,7 @@
         <activity
             android:name=".SchoolDetailActivity"
              />
+        <activity android:name=".MajorDetailActivity"/>
     </application>
 
 </manifest>

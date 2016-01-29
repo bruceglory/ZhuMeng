@@ -8,12 +8,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 
 import com.avos.avoscloud.AVOSCloud;
 import com.example.bruce.zhumeng.fragment.MajorsFragment;
 import com.example.bruce.zhumeng.fragment.PsysFragment;
 import com.example.bruce.zhumeng.fragment.SchoolsFragment;
+import com.example.bruce.zhumeng.fragment.ScoreLinesFragment;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
@@ -28,7 +28,6 @@ public class MainActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,10 +40,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void setUpToolbar() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("");
-
         if(toolbar!=null) {
             setSupportActionBar(toolbar);
+            toolbar.setTitle("school");
         }
 //        toolbar.setTitle("");
 
@@ -99,6 +97,11 @@ public class MainActivity extends AppCompatActivity {
                                     .replace(R.id.frame_container, fragment).commit();
 
                         }
+                        if (iDrawerItem == drawerScore) {
+                            Fragment fragment = new ScoreLinesFragment();
+                            getSupportFragmentManager().beginTransaction()
+                                    .replace(R.id.frame_container,fragment).commit();
+                        }
                         if (iDrawerItem == drawerPsy) {
 
                             Fragment fragment = new PsysFragment();
@@ -120,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+       // getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 

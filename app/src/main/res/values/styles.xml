@@ -25,4 +25,10 @@
         <item name="color">@android:color/white</item>
     </style>
 
+    <style name="padding_tap">
+        <item name="android:paddingLeft">@dimen/once_tap</item>
+        <item name="android:paddingTop">@dimen/once_tap</item>
+        <item name="android:paddingRight">@dimen/once_tap</item>
+        <item name="android:paddingBottom">@dimen/once_tap</item>
+    </style>
 </resources>

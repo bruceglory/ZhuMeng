@@ -33,9 +33,7 @@ public class PsysFragment extends Fragment {
 
     private void findView(View rootView) {
         psyWebView = (WebView) rootView.findViewById(R.id.psy_webview);
-        toolbarTitle = (TextView)getActivity().findViewById(R.id.toolbar_title1);
-
-
+        //toolbarTitle = (TextView)getActivity().findViewById(R.id.toolbar_title1);
     }
 
     private void initialize() {

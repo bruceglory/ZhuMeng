@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/popup_window"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/transparent_bg"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="321dp"
+        android:background="#f2f2f2"
+        >
+        <ListView
+            android:id="@+id/popupwindow_listView"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="@dimen/double_tap"
+            android:headerDividersEnabled="true"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/major_category_list"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
     <TextView
-        android:id="@+id/major_category_name"
+        android:id="@+id/major_name"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginLeft="32dp"
         android:gravity="center_vertical"
-        android:textColor="#000000"
+        android:textColor="@color/ColorPrimary"
         />
 </RelativeLayout>
