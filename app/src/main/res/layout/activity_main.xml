@@ -12,16 +12,35 @@
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         android:elevation="4dp" >
-    <TextView
-        android:id="@+id/toolbar_title1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:textColor="@color/md_blue_A400"
-        android:text="@string/drawer_school"
-        />
+        <LinearLayout
+            android:id="@+id/score_province_select"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|right"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            >
+
+            <TextView
+                android:id="@+id/score_province"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textColor="@color/md_white_1000"
+                android:text="@string/default_province"
+
+                />
+            <ImageView
+                android:id="@+id/score_province_down_arrow"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginRight="8dp"
+                android:layout_gravity="center"
+                android:src="@drawable/arrow_down_black"
+                />
+
+        </LinearLayout>
+
     </android.support.v7.widget.Toolbar>
 
     <FrameLayout

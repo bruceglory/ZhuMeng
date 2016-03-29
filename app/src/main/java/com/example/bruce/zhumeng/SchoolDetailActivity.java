@@ -25,7 +25,7 @@ import com.example.bruce.zhumeng.views.custom_listeners.AnimatorAdapter;
 import com.example.bruce.zhumeng.views.custom_listeners.TransitionAdapter;
 import com.mikepenz.materialize.MaterializeBuilder;
 import com.mikepenz.materialize.util.UIUtils;
-import com.squareup.picasso.Picasso;
+//import com.squareup.picasso.Picasso;
 
 /**
  * Created by bruce on 2015/12/16.
@@ -169,8 +169,8 @@ public class SchoolDetailActivity extends AppCompatActivity {
 
     private void loadBackdrop() {
 
-        Picasso.with(this).
-                load("http://www.ruc.edu.cn/wp-content/themes/rucweb/images/ruc_bg_178.jpg").into(schoolPicture);
+//        Picasso.with(this).
+//                load("http://www.ruc.edu.cn/wp-content/themes/rucweb/images/ruc_bg_178.jpg").into(schoolPicture);
     }
 
     private void fillFab() {

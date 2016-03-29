@@ -22,6 +22,9 @@
         <activity
             android:name=".SchoolDetailActivity"
              />
+        <activity android:name=".MajorDetailActivity"/>
+        <activity android:name=".views.LoginActivity"/>
+
     </application>
 
 </manifest>

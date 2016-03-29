@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <TextView
+        android:id="@+id/science"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginLeft="@dimen/double_tap"
+        android:text="理科"
+        android:textSize="@dimen/material_text_title"
+        />
+    <ListView
+        android:id="@+id/science_listview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/science"
+        android:layout_marginLeft="@dimen/triple_tap"
+        android:layout_marginRight="@dimen/triple_tap"
+        >
+    </ListView>
+
+    <TextView
+        android:id="@+id/art"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/triple_tap"
+        android:layout_marginLeft="@dimen/double_tap"
+        android:layout_below="@id/science_listview"
+        android:text="文科"
+        android:textSize="@dimen/material_text_title"
+        />
+
+    <ListView
+        android:id="@+id/art_human_science_listView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/art"
+        android:layout_marginLeft="@dimen/triple_tap"
+        android:layout_marginRight="@dimen/triple_tap"
+        >
+    </ListView>
+</RelativeLayout>

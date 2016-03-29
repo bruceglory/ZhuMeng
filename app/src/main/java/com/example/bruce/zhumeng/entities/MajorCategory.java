@@ -9,12 +9,11 @@ public class MajorCategory {
 
     private int majorCategoryId;
     private String majorCategoryName;
-    private List<MajorDetailCategory> majorDetailCategoryList;
+    private List<MajorDetailCategory> majorDetailCategoryList ;
 
-    public MajorCategory(int id,String name,List<MajorDetailCategory> list) {
+    public MajorCategory(int id, String name) {
         this.majorCategoryId         = id;
         this.majorCategoryName       = name;
-        this.majorDetailCategoryList = list;
     }
 
     public int getMajorCategoryId() {
@@ -27,5 +26,9 @@ public class MajorCategory {
 
     public List<MajorDetailCategory> getMajorDetailCategoryList() {
         return majorDetailCategoryList;
+    }
+
+    public void setMajorDetailCategoryList(List<MajorDetailCategory> majorDetailCategoryList) {
+        this.majorDetailCategoryList = majorDetailCategoryList;
     }
 }
