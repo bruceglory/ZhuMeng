@@ -28,6 +28,7 @@
     <!-- major detail info-->
     <string name="major_intro_tilte">专业概况</string>
     <string name="major_des_title">专业解读</string>
+<<<<<<< HEAD
 
     <!-- login -->
     <string name="login_label_username">账号</string>
@@ -37,4 +38,6 @@
     <string name="login_register_link">注册</string>
     <string name="login_sign_username">用户名</string>
 
+=======
+>>>>>>> b6fe9d5439ddf5be6661e7f55d92486065e8ba61
 </resources>

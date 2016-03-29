@@ -23,8 +23,11 @@
             android:name=".SchoolDetailActivity"
              />
         <activity android:name=".MajorDetailActivity"/>
+<<<<<<< HEAD
         <activity android:name=".views.LoginActivity"/>
 
+=======
+>>>>>>> b6fe9d5439ddf5be6661e7f55d92486065e8ba61
     </application>
 
 </manifest>

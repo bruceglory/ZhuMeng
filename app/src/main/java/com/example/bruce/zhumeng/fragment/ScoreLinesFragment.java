@@ -193,6 +193,7 @@ public class ScoreLinesFragment extends Fragment
            provincePopupWindow.dismiss();
         }
     }
+<<<<<<< HEAD
 
     @Override
     public void onDestroy() {
@@ -201,4 +202,6 @@ public class ScoreLinesFragment extends Fragment
             scoreProvinceSelected.setVisibility(View.GONE);
         }
     }
+=======
+>>>>>>> b6fe9d5439ddf5be6661e7f55d92486065e8ba61
 }

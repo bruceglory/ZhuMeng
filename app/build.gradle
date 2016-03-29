@@ -39,7 +39,10 @@ dependencies {
     compile('com.mikepenz:materialdrawer:4.5.5@aar') {
         transitive = true;
     }
+<<<<<<< HEAD
     compile 'com.mikepenz:google-material-typeface:2.2.0.1.original@aar'
+=======
+>>>>>>> b6fe9d5439ddf5be6661e7f55d92486065e8ba61
     compile 'com.android.support:support-v4:21.0.3'
     //avoscloud-sdk Îª LeanCloud»ù´¡°ü
     compile 'cn.leancloud.android:avoscloud-sdk:v3.+'

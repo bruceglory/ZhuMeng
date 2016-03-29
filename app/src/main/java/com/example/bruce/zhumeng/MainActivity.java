@@ -17,9 +17,12 @@ import com.example.bruce.zhumeng.fragment.MajorsFragment;
 import com.example.bruce.zhumeng.fragment.PsysFragment;
 import com.example.bruce.zhumeng.fragment.SchoolsFragment;
 import com.example.bruce.zhumeng.fragment.ScoreLinesFragment;
+<<<<<<< HEAD
 import com.example.bruce.zhumeng.views.LoginActivity;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
+=======
+>>>>>>> b6fe9d5439ddf5be6661e7f55d92486065e8ba61
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
@@ -34,12 +37,16 @@ import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
 public class MainActivity extends AppCompatActivity {
 
+<<<<<<< HEAD
     private static final int PROFILE_SETTING = 1;
     private Toolbar toolbar ;
     private AccountHeader headerResult = null;
     private Drawer result = null;
     final SecondaryDrawerItem drawerAccount = new SecondaryDrawerItem().
             withName(R.string.drawer_account1).withIdentifier(5);
+=======
+    private Toolbar toolbar;
+>>>>>>> b6fe9d5439ddf5be6661e7f55d92486065e8ba61
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
