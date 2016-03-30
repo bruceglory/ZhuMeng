@@ -17,12 +17,10 @@ import com.example.bruce.zhumeng.fragment.MajorsFragment;
 import com.example.bruce.zhumeng.fragment.PsysFragment;
 import com.example.bruce.zhumeng.fragment.SchoolsFragment;
 import com.example.bruce.zhumeng.fragment.ScoreLinesFragment;
-<<<<<<< HEAD
+
 import com.example.bruce.zhumeng.views.LoginActivity;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
-=======
->>>>>>> b6fe9d5439ddf5be6661e7f55d92486065e8ba61
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
@@ -37,16 +35,12 @@ import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
 public class MainActivity extends AppCompatActivity {
 
-<<<<<<< HEAD
-    private static final int PROFILE_SETTING = 1;
     private Toolbar toolbar ;
     private AccountHeader headerResult = null;
     private Drawer result = null;
-    final SecondaryDrawerItem drawerAccount = new SecondaryDrawerItem().
+    SecondaryDrawerItem drawerAccount1 = new SecondaryDrawerItem().
             withName(R.string.drawer_account1).withIdentifier(5);
-=======
-    private Toolbar toolbar;
->>>>>>> b6fe9d5439ddf5be6661e7f55d92486065e8ba61
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
 
         result = new DrawerBuilder().withActivity(this)
                 .addDrawerItems(drawerSchool, drawerMajor, drawerScore, drawerPsy,
-                        new DividerDrawerItem(),drawerAccount)
+                        new DividerDrawerItem(),drawerAccount1)
                 .withToolbar(toolbar)
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
@@ -143,7 +137,11 @@ public class MainActivity extends AppCompatActivity {
                                     .replace(R.id.frame_container, fragment).commit();
 
                         }
-                        if(iDrawerItem == drawerAccount) {
+                        if(iDrawerItem == drawerAccount1) {
+                            AVUser currentUser = AVUser.getCurrentUser();
+                            if(currentUser!=null) {
+                                AVUser.logOut();
+                            }
                             Intent accountIntent = new Intent(MainActivity.this,LoginActivity
                                     .class);
                             startActivityForResult(accountIntent,1);
@@ -155,9 +153,33 @@ public class MainActivity extends AppCompatActivity {
                 .withAccountHeader(headerResult)
                 .build();
         result.setSelection(1);
+
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        AVUser currentUser = AVUser.getCurrentUser();
+        if(currentUser != null) {
+            IProfile newProfile = new ProfileDrawerItem().withName(currentUser.getUsername()).
+                    withEmail(currentUser.getEmail()).withIcon(R.drawable.person_image_empty)
+                    .withIdentifier(100);
+            if (headerResult != null) {
+                headerResult.addProfiles(newProfile);
+            }
+            drawerAccount1.withName(R.string.drawer_account2);
+            result.updateItem(drawerAccount1);
+        } else {
+            if(headerResult != null) {
+                if (headerResult.getProfiles() != null) {
+                    headerResult.removeProfileByIdentifier(100);
+                }
+            }
+            drawerAccount1.withName(R.string.drawer_account1);
+            result.updateItem(drawerAccount1);
+        }
 
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -181,21 +203,38 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(resultCode == RESULT_OK) {
-            Log.d("zhang", "result ok");
-            AVUser success_user = (AVUser) data.getParcelableExtra("success_user");
-            IProfile newProfile = new ProfileDrawerItem().withName(success_user.getUsername()).
-                    withEmail(success_user.getEmail()).withIcon(R.drawable.person_image_empty)
-                    .withIdentifier(100);
-            if (headerResult != null) {
-                headerResult.addProfiles(newProfile);
-            }
-            drawerAccount.withName(R.string.drawer_account2);
-            result.updateItem(drawerAccount);
-        }
-    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        if(resultCode == LoginActivity.REGISTER_SUCC_RES) {
+//            Log.d("zhang", "result ok");
+//            result.closeDrawer();
+//            AVUser success_user = (AVUser) data.getParcelableExtra("success_user");
+//            IProfile newProfile = new ProfileDrawerItem().withName(success_user.getUsername()).
+//                    withEmail(success_user.getEmail()).withIcon(R.drawable.person_image_empty)
+//                    .withIdentifier(100);
+//            if (headerResult != null) {
+//                headerResult.addProfiles(newProfile);
+//            }
+//            drawerAccount1.withName(R.string.drawer_account2);
+//            result.updateItem(drawerAccount1);
+//            //result.removeItem(5);
+//        } else if(resultCode == LoginActivity.SIGN_SUCC_RES) {
+//            Log.d("zhang", "login success signsuccres");
+//            result.closeDrawer();
+//            AVUser currentUser = AVUser.getCurrentUser();
+//            if(currentUser != null) {
+//                IProfile newProfile = new ProfileDrawerItem().withName(currentUser.getUsername()).
+//                        withEmail(currentUser.getEmail()).withIcon(R.drawable.person_image_empty)
+//                        .withIdentifier(100);
+//                if (headerResult != null) {
+//                    headerResult.addProfiles(newProfile);
+//                }
+//                drawerAccount1.withName(R.string.drawer_account2);
+//                result.updateItem(drawerAccount1);
+//            }
+//
+//        }
+//    }
 
     @Override
     public void onBackPressed() {
