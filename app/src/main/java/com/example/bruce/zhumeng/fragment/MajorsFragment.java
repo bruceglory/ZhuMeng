@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,8 +36,11 @@ public class MajorsFragment extends Fragment implements ExpandableListView.OnGro
     private static final int LOAD_MAJORCATEGORY_SUCCESS = 0;
     private static final int LOAD_MAJOR_DETAIL_CATTGORY_SUCCESS = 1;
     public static final int  LOAD_MAJOR_SUCCESS = 2;
+
+    private Toolbar toolbar;
     private ExpandableListView expandableListView;
     private MajorCategoryAdapter adapter;
+
     private List<MajorCategory> categoryList = new ArrayList<>();
     private List<MajorDetailCategory> detailCategoryList = new ArrayList<>();
     private List<MajorDetailCategory> detailCategoryList2 = new ArrayList<>();
@@ -54,6 +58,8 @@ public class MajorsFragment extends Fragment implements ExpandableListView.OnGro
     }
 
     private void findView(View rootView) {
+        toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+        toolbar.setTitle(R.string.drawer_major);
         expandableListView = (ExpandableListView) rootView.findViewById(R.id.major_list);
     }
 

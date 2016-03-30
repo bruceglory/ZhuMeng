@@ -14,6 +14,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.Pair;
 import android.util.SparseArray;
@@ -59,6 +60,7 @@ public class SchoolsFragment extends Fragment
     private Handler schoolsHandler;
     private SchoolsPresenter schoolsPresenter;
 
+    private Toolbar toolbar;
     private RecyclerView recyclerView;
     private LinearLayoutManager linearLayoutManager;
     private SchoolsAdapter schoolsAdapter;
@@ -81,6 +83,8 @@ public class SchoolsFragment extends Fragment
     }
 
     private void findView(View rootView){
+        toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+        toolbar.setTitle(R.string.drawer_school);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.my_recycler_view);
         progressBar  = (ProgressBar) rootView.findViewById(R.id.activity_schools_progress);
     }

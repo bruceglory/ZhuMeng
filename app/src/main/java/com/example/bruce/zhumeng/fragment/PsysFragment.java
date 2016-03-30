@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,8 +21,7 @@ import com.example.bruce.zhumeng.R;
 public class PsysFragment extends Fragment {
 
     private WebView psyWebView;
-    private TextView toolbarTitle;
-
+    private Toolbar toolbar;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -32,8 +32,9 @@ public class PsysFragment extends Fragment {
     }
 
     private void findView(View rootView) {
+        toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+        toolbar.setTitle(R.string.drawer_psy);
         psyWebView = (WebView) rootView.findViewById(R.id.psy_webview);
-        //toolbarTitle = (TextView)getActivity().findViewById(R.id.toolbar_title1);
     }
 
     private void initialize() {

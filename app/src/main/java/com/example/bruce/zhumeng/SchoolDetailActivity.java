@@ -55,6 +55,7 @@ public class SchoolDetailActivity extends AppCompatActivity {
 
     private void findView() {
         toolbar = (Toolbar) findViewById(R.id.school_info_toolbar);
+        toolbar.setTitle(R.string.drawer_school);
         schoolPicture = (ImageView)findViewById(R.id.school_picture);
         schoolName = (TextView) findViewById(R.id.school_name);
         collapsingToolbarLayout = (CollapsingToolbarLayout)findViewById(R.id.collapsing_toolbar);

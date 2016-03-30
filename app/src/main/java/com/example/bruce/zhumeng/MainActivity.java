@@ -1,5 +1,7 @@
 package com.example.bruce.zhumeng;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -65,44 +67,24 @@ public class MainActivity extends AppCompatActivity {
     private void setUpDrawer() {
         //Drawer item
         final SecondaryDrawerItem drawerSchool = new SecondaryDrawerItem().
-                withName(R.string.drawer_school).withIdentifier(1);
+                withName(R.string.drawer_school).withIcon(GoogleMaterial.Icon.gmd_cloud)
+                .withIdentifier(1);
         final SecondaryDrawerItem drawerMajor = new SecondaryDrawerItem().
-                withName(R.string.drawer_major).withIdentifier(2);
+                withName(R.string.drawer_major).withIcon(GoogleMaterial.Icon.gmd_book)
+                .withIdentifier(2);
         final SecondaryDrawerItem drawerScore = new SecondaryDrawerItem().
-                withName(R.string.drawer_score).withIdentifier(3);
+                withName(R.string.drawer_score).withIcon(GoogleMaterial.Icon.gmd_alarm)
+                .withIdentifier(3);
         final SecondaryDrawerItem drawerPsy = new SecondaryDrawerItem().
-                withName(R.string.drawer_psy).withIdentifier(4);
+                withName(R.string.drawer_psy).withIcon(GoogleMaterial.Icon.gmd_adjust)
+                .withIdentifier(4);
 
 
         //create the AccountHeader
-
         headerResult = new AccountHeaderBuilder()
                 .withActivity(this)
                 .withHeaderBackground(R.drawable.ruc_bg_174)
                 .build();
-//                .addProfiles(
-//                        new ProfileSettingDrawerItem().withName("Add Account").
-//                                withDescription("Add new GitHub Account")
-//                                .withIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_filter_9_plus)
-//                                        .actionBar().paddingDp(5)
-//                                        .colorRes(R.color.material_drawer_primary_text))
-//                                .withIdentifier(PROFILE_SETTING),
-//                        new ProfileSettingDrawerItem().withName("Manager Account").withIcon
-//                                (GoogleMaterial.Icon.gmd_settings)
-//                )
-//                .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
-//                                                 @Override
-//                                                 public boolean onProfileChanged(View view, IProfile
-//                                                         ipProfile, boolean curProfile) {
-//                                                     Intent intent = new Intent(MainActivity
-//                                                             .this, LoginActivity.class);
-//                                                     MainActivity.this.startActivityForResult
-//                                                             (intent, 1);
-//                                                     return true;
-//                                                 }
-//                                             }
-//                )
-
 
         result = new DrawerBuilder().withActivity(this)
                 .addDrawerItems(drawerSchool, drawerMajor, drawerScore, drawerPsy,
@@ -111,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(View view, int i, IDrawerItem iDrawerItem) {
+
                         if (iDrawerItem == drawerSchool) {
                             Log.d("zhang", "i==0");
                             Fragment fragment = new SchoolsFragment();
@@ -128,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
                         if (iDrawerItem == drawerScore) {
                             Fragment fragment = new ScoreLinesFragment();
                             getSupportFragmentManager().beginTransaction()
-                                    .replace(R.id.frame_container,fragment).commit();
+                                    .replace(R.id.frame_container, fragment).commit();
                         }
                         if (iDrawerItem == drawerPsy) {
 
@@ -137,14 +120,14 @@ public class MainActivity extends AppCompatActivity {
                                     .replace(R.id.frame_container, fragment).commit();
 
                         }
-                        if(iDrawerItem == drawerAccount1) {
+                        if (iDrawerItem == drawerAccount1) {
                             AVUser currentUser = AVUser.getCurrentUser();
-                            if(currentUser!=null) {
-                                AVUser.logOut();
+                            if (currentUser != null) {
+                                confirmBack();
+                            } else {
+                                jumpLogin();
                             }
-                            Intent accountIntent = new Intent(MainActivity.this,LoginActivity
-                                    .class);
-                            startActivityForResult(accountIntent,1);
+
                         }
 
                         return false;
@@ -152,13 +135,39 @@ public class MainActivity extends AppCompatActivity {
                 })
                 .withAccountHeader(headerResult)
                 .build();
-        result.setSelection(1);
+        //result.setSelection(1);
 
     }
 
+    private void confirmBack() {
+        new AlertDialog.Builder(this).setMessage(R.string.confirm_back_mes)
+                .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        AVUser.logOut();
+                        jumpLogin();
+                    }
+                })
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //do nothing
+                    }
+                })
+                .show();
+
+    }
+
+    //jump login activity
+    private void jumpLogin(){
+        Intent accountIntent = new Intent(MainActivity.this,LoginActivity
+                .class);
+        startActivityForResult(accountIntent,1);
+    }
     @Override
     protected void onResume() {
         super.onResume();
+        //to determine if the user is logged in
         AVUser currentUser = AVUser.getCurrentUser();
         if(currentUser != null) {
             IProfile newProfile = new ProfileDrawerItem().withName(currentUser.getUsername()).
@@ -167,7 +176,8 @@ public class MainActivity extends AppCompatActivity {
             if (headerResult != null) {
                 headerResult.addProfiles(newProfile);
             }
-            drawerAccount1.withName(R.string.drawer_account2);
+            //show switch account drawer
+            drawerAccount1.withName(R.string.drawer_account2).withIcon(GoogleMaterial.Icon.gmd_account_box);
             result.updateItem(drawerAccount1);
         } else {
             if(headerResult != null) {
@@ -175,7 +185,8 @@ public class MainActivity extends AppCompatActivity {
                     headerResult.removeProfileByIdentifier(100);
                 }
             }
-            drawerAccount1.withName(R.string.drawer_account1);
+            //show account drawer
+            drawerAccount1.withName(R.string.drawer_account1).withIcon(GoogleMaterial.Icon.gmd_alarm_off);
             result.updateItem(drawerAccount1);
         }
 

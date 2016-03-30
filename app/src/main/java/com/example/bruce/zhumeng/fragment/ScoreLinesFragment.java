@@ -77,7 +77,7 @@ public class ScoreLinesFragment extends Fragment
         scienceListView = (ListView)rootView.findViewById(R.id.science_listview);
         artListView = (ListView) rootView.findViewById(R.id.art_human_science_listView);
         toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
-        toolbar.setTitle("scoreLine");
+        toolbar.setTitle(R.string.drawer_score);
         scoreProvinceSelected = (LinearLayout) toolbar.findViewById(R.id.score_province_select);
         provinceName = (TextView) toolbar.findViewById(R.id.score_province);
         scoreProvinceSelected.setVisibility(View.VISIBLE);

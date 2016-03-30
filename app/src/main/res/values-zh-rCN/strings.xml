@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <!-- drawer info-->
+    <string name="drawer_school">学校</string>
+    <string name="drawer_major">专业</string>
+    <string name="drawer_score">录取线</string>
     <string name="drawer_psy">职业测评</string>
     <string name="drawer_account1">登录</string>
     <string name="drawer_account2">切换账号</string>
+
     <!-- school_data info-->
     <string name="school_academician1">院士</string>
     <string name="school_master1">硕士点</string>
@@ -39,4 +43,8 @@
     <string name="login_sign_username">用户名</string>
 
     <string name="register_success_mes">注册成功</string>
+
+    <string name="confirm_back_mes">确认退出当前账号</string>
+    <string name="confirm">确定</string>
+    <string name="cancel">取消</string>
 </resources>
