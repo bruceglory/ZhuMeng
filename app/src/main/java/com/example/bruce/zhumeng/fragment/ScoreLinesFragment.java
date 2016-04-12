@@ -34,8 +34,11 @@ import java.util.List;
 /**
  * Created by GKX100127 on 2016/1/13.
  */
-public class ScoreLinesFragment extends Fragment
+public class ScoreLinesFragment extends BaseFragment
         implements View.OnClickListener, AdapterView.OnItemClickListener{
+
+    private static final String TAG = ScoreLinesFragment.class.getSimpleName();
+
     private List<String> years       = new ArrayList<>();
     private List<String> firstScore  = new ArrayList<>();
     private List<String> secondScore = new ArrayList<>();
@@ -55,11 +58,20 @@ public class ScoreLinesFragment extends Fragment
     private LinearLayout scoreProvinceSelected;
     private TextView provinceName;
 
-    @Nullable
+    public static ScoreLinesFragment newInstance() {
+        Log.d(TAG,"create ScoreLinesFragment");
+        ScoreLinesFragment scoreLinesFragment = new ScoreLinesFragment();
+        return scoreLinesFragment;
+    }
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.score_line_mainview,null);
-        findView(rootView);
+    protected int getLayoutId() {
+        return R.layout.score_line_mainview;
+    }
+
+    @Override
+    protected void afterCreate(Bundle savedInstanceState) {
+        findView(mRootView);
         initialize();
         if(artAdapter == null)
             artAdapter = new ScoreLineAdapter(getActivity(), years, firstScore, secondScore,thirdScore);
@@ -69,9 +81,7 @@ public class ScoreLinesFragment extends Fragment
             provinceAdapter = new ProvinceAdapter(getActivity(), province);
         scienceListView.setAdapter(scienceAdapter);
         artListView.setAdapter(artAdapter);
-        return rootView;
     }
-
 
     private void findView(View rootView) {
         scienceListView = (ListView)rootView.findViewById(R.id.science_listview);
@@ -80,7 +90,7 @@ public class ScoreLinesFragment extends Fragment
         toolbar.setTitle(R.string.drawer_score);
         scoreProvinceSelected = (LinearLayout) toolbar.findViewById(R.id.score_province_select);
         provinceName = (TextView) toolbar.findViewById(R.id.score_province);
-        scoreProvinceSelected.setVisibility(View.VISIBLE);
+//        scoreProvinceSelected.setVisibility(View.VISIBLE);
         scoreProvinceSelected.setOnClickListener(this);
     }
 
@@ -197,9 +207,6 @@ public class ScoreLinesFragment extends Fragment
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(scoreProvinceSelected != null) {
-            scoreProvinceSelected.setVisibility(View.GONE);
-        }
     }
 
 }

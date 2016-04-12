@@ -18,17 +18,25 @@ import com.example.bruce.zhumeng.R;
 /**
  * Created by bruce on 2016/1/4.
  */
-public class PsysFragment extends Fragment {
+public class PsysFragment extends BaseFragment {
 
     private WebView psyWebView;
     private Toolbar toolbar;
-    @Nullable
+
+    public static PsysFragment newInstance() {
+        PsysFragment psysFragment = new PsysFragment();
+        return psysFragment;
+    }
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.psy_mainview,container,false);
-        findView(rootView);
+    protected int getLayoutId() {
+        return R.layout.psy_mainview;
+    }
+
+    @Override
+    protected void afterCreate(Bundle savedInstanceState) {
+        findView(mRootView);
         initialize();
-        return rootView;
     }
 
     private void findView(View rootView) {

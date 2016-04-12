@@ -17,54 +17,25 @@ import java.util.List;
  * Created by bruce on 2015/12/29.
  */
 public abstract class BaseFragment extends Fragment {
-
-    LoadingPage loadingPage;
+    protected View mRootView;
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if(loadingPage == null) {
-            loadingPage = new LoadingPage(getActivity()){
-                @Override
-                protected View createSuccessView() {
-                   return BaseFragment.this.createSuccessView();
-                }
-
-                @Override
-                public LoadResult load() {
-                    return BaseFragment.this.load();
-                }
-            };
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        if(mRootView == null) {
+            mRootView = inflater.inflate(getLayoutId(),container,false);
         }
-        return loadingPage;
+        return mRootView;
     }
 
-
-    public abstract LoadingPage.LoadResult load();
-
-
-    protected abstract View createSuccessView();
-
-
-    public void show(){
-        if (loadingPage != null){
-            loadingPage.show();
-        }
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        afterCreate(savedInstanceState);
     }
 
-    public LoadingPage.LoadResult checkData(List datas) {
-        if(datas == null) {
-            return LoadingPage.LoadResult.error;
-        } else {
-            if(datas.size() == 0) {
-                return LoadingPage.LoadResult.empty;
-            } else {
-                return LoadingPage.LoadResult.success;
-            }
-
-        }
-    }
-
+    protected abstract int getLayoutId();
+    protected abstract void afterCreate(Bundle savedInstanceState);
 }
 
 

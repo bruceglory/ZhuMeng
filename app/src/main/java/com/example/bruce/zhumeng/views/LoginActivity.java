@@ -3,7 +3,6 @@ package com.example.bruce.zhumeng.views;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -13,20 +12,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.avos.avoscloud.AVException;
-import com.avos.avoscloud.AVOSCloud;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.LogInCallback;
 import com.avos.avoscloud.SignUpCallback;
 import com.example.bruce.zhumeng.R;
+import com.example.bruce.zhumeng.presenters.UserLoginPresenter;
 
 /**
  * Created by bruce on 2016/3/28.
  */
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener,IUserLoginView {
 
     private static final int INVALID_EMAIL_ADDRESS = 1;
     public static final int REGISTER_SUCC_RES = 2;
     public static final int SIGN_SUCC_RES = 3;
+    private UserLoginPresenter userLoginPresenter;
     private Handler handler;
     private TextView usernameTv;
     private EditText usernameEt;
@@ -40,23 +40,24 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
-        AVOSCloud.initialize(this, "FFS0rxJBqrbQJ44HGKXrB4o0", "bsIgWjlXtj549JfqyWQ3ngdM");
+        //AVOSCloud.initialize(this, "FFS0rxJBqrbQJ44HGKXrB4o0", "bsIgWjlXtj549JfqyWQ3ngdM");
         init();
     }
 
     private void init() {
-        handler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                int what = msg.what;
-                switch (what) {
-                    case INVALID_EMAIL_ADDRESS:
-                        Toast.makeText(getApplicationContext(),"invalid email address",Toast
-                                .LENGTH_LONG).show();
-                        break;
-                }
-            }
-        };
+//        handler = new Handler() {
+//            @Override
+//            public void handleMessage(Message msg) {
+//                int what = msg.what;
+//                switch (what) {
+//                    case INVALID_EMAIL_ADDRESS:
+//                        Toast.makeText(getApplicationContext(),"invalid email address",Toast
+//                                .LENGTH_LONG).show();
+//                        break;
+//                }
+//            }
+//        };
+        userLoginPresenter = new UserLoginPresenter(this);
         usernameTv = (TextView) findViewById(R.id.login_username);
         usernameEt = (EditText) findViewById(R.id.username_edit);
         passwordEt = (EditText) findViewById(R.id.password_edit);
@@ -80,13 +81,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 registerReset();
                 break;
             case R.id.signin:
+                //userLoginPresenter.login();
                 signInReset();
                 break;
             case R.id.register_button:
-                register();
+                //register();
                 break;
             case R.id.signin_button:
-                signIn();
+                //signIn();
+                userLoginPresenter.login(emailEt.getText().toString(),passwordEt.getText()
+                        .toString());
                 break;
             default:
                 break;
@@ -116,49 +120,60 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             usernameEt.setText(null);
         }
     }
-    private void register() {
-        final AVUser user = new AVUser();
-        user.setUsername(usernameEt.getText().toString());
-        user.setPassword(passwordEt.getText().toString());
-        user.setEmail(emailEt.getText().toString());
-        user.signUpInBackground(new SignUpCallback() {
-            @Override
-            public void done(AVException e) {
-                if (e == null) {
-                    Log.d("zhang", "success");
-                    Toast.makeText(getApplicationContext(),R.string.register_success_mes,
-                            Toast.LENGTH_SHORT);
-                    Intent userIntent = new Intent();
-                    Bundle bundle = new Bundle();
-                    bundle.putParcelable("success_user",user);
-                    userIntent.putExtras(bundle);
-                    LoginActivity.this.setResult(REGISTER_SUCC_RES,userIntent);
-                    LoginActivity.this.finish();
-                } else {
-                    if (e.getCode() == AVException.INVALID_EMAIL_ADDRESS) {
-                        handler.sendEmptyMessage(INVALID_EMAIL_ADDRESS);
-                    }
-                    Log.d("zhang", "failed" + e.getCause() + e.getCode());
-                }
-            }
-        });
+//    private void register() {
+//        final AVUser user = new AVUser();
+//        user.setUsername(usernameEt.getText().toString());
+//        user.setPassword(passwordEt.getText().toString());
+//        user.setEmail(emailEt.getText().toString());
+//        user.signUpInBackground(new SignUpCallback() {
+//            @Override
+//            public void done(AVException e) {
+//                if (e == null) {
+//                    Log.d("zhang", "success");
+//                    Toast.makeText(getApplicationContext(),R.string.register_success_mes,
+//                            Toast.LENGTH_SHORT);
+//                    Intent userIntent = new Intent();
+//                    Bundle bundle = new Bundle();
+//                    bundle.putParcelable("success_user",user);
+//                    userIntent.putExtras(bundle);
+//                    LoginActivity.this.setResult(REGISTER_SUCC_RES,userIntent);
+//                    LoginActivity.this.finish();
+//                } else {
+//                    if (e.getCode() == AVException.INVALID_EMAIL_ADDRESS) {
+//                        //handler.sendEmptyMessage(INVALID_EMAIL_ADDRESS);
+//                    }
+//                    Log.d("zhang", "failed" + e.getCause() + e.getCode());
+//                }
+//            }
+//        });
+//    }
+//
+//    private void signIn() {
+//        AVUser.logInInBackground(emailEt.getText().toString(), passwordEt.getText().toString(), new
+//                LogInCallback<AVUser>() {
+//            @Override
+//            public void done(AVUser avUser, AVException e) {
+//                if(e == null) {
+//                    Log.d("zhang","login success");
+//                    Toast.makeText(getApplicationContext(), R.string.register_success_mes,
+//                            Toast.LENGTH_SHORT);
+//                    LoginActivity.this.setResult(SIGN_SUCC_RES);
+//                    LoginActivity.this.finish();
+//                } else {
+//                    Log.d("zhang","login failed "+ "error code " + e.getCode());
+//                }
+//            }
+//        });
+//    }
+
+
+    @Override
+    public void jumpMainActivity() {
+        this.finish();
     }
 
-    private void signIn() {
-        AVUser.logInInBackground(emailEt.getText().toString(), passwordEt.getText().toString(), new
-                LogInCallback<AVUser>() {
-            @Override
-            public void done(AVUser avUser, AVException e) {
-                if(e == null) {
-                    Log.d("zhang","login success");
-                    Toast.makeText(getApplicationContext(), R.string.register_success_mes,
-                            Toast.LENGTH_SHORT);
-                    LoginActivity.this.setResult(SIGN_SUCC_RES);
-                    LoginActivity.this.finish();
-                } else {
-                    Log.d("zhang","login failed "+ "error code " + e.getCode());
-                }
-            }
-        });
+    @Override
+    public void showFailedError(int errorCode) {
+        Log.d("LoginActivity","login failed");
     }
 }

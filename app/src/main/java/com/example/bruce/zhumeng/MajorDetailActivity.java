@@ -36,7 +36,7 @@ public class MajorDetailActivity extends AppCompatActivity {
     private static final int LOAD_INTRO_SUCC = 0;
     private static final int LOAD_DES_SUCC = 1;
     private OkHttpClient client = new OkHttpClient();
-    private Handler majorDetailHandler;
+    private static Handler majorDetailHandler;
     private String introText;
     private String desText;
     private Toolbar toolbar;
@@ -81,7 +81,7 @@ public class MajorDetailActivity extends AppCompatActivity {
         schoolName = (TextView) findViewById(R.id.school_name);
         collapsingToolbarLayout = (CollapsingToolbarLayout)findViewById(R.id.collapsing_toolbar);
         schoolDetailInfo = (LinearLayout) findViewById(R.id.school_detail_info);
-         majorIntro = (TextView) findViewById(R.id.major_introduce);
+        majorIntro = (TextView) findViewById(R.id.major_introduce);
         majorIntroMore = (TextView) findViewById(R.id.major_introduce_more);
         majorDes = (TextView) findViewById(R.id.major_des);
         loadMore = (Button) findViewById(R.id.load_more);
@@ -105,12 +105,12 @@ public class MajorDetailActivity extends AppCompatActivity {
         majorDetailHandler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
-                if(msg.what == LOAD_INTRO_SUCC) {
-                    majorIntro.setText(introText);
-                    majorIntroMore.setText(introText);
-                } else if(msg.what == LOAD_DES_SUCC) {
-                    majorDes.setText(desText);
-                }
+            if(msg.what == LOAD_INTRO_SUCC) {
+                majorIntro.setText(introText);
+                majorIntroMore.setText(introText);
+            } else if(msg.what == LOAD_DES_SUCC) {
+                majorDes.setText(desText);
+            }
             }
         };
         setUpToolbar();
@@ -158,11 +158,13 @@ public class MajorDetailActivity extends AppCompatActivity {
                     Elements ctn = doc.getElementsByClass("ctn");
                     if (ctn != null) {
                         Element parent = ctn.first();
-                        Elements childs = parent.children();
-                        for (Element child : childs) {
-                            introBuild.append(child.text());
-                            if (child != childs.last())
-                                introBuild.append("\n\n");
+                        if(parent != null) {
+                            Elements childs = parent.children();
+                            for (Element child : childs) {
+                                introBuild.append(child.text());
+                                if (child != childs.last())
+                                    introBuild.append("\n\n");
+                            }
                         }
                     }
                     introText = introBuild.toString();

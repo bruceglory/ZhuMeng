@@ -30,7 +30,7 @@ import java.util.List;
 /**
  * Created by bruce on 2016/1/6.
  */
-public class MajorsFragment extends Fragment implements ExpandableListView.OnGroupClickListener,
+public class MajorsFragment extends BaseFragment implements ExpandableListView.OnGroupClickListener,
         MajorCategoryAdapter.OnChildTreeViewClickListener {
 
     private static final int LOAD_MAJORCATEGORY_SUCCESS = 0;
@@ -48,13 +48,20 @@ public class MajorsFragment extends Fragment implements ExpandableListView.OnGro
     private Handler majorsHandler;
     private int clickPosition = 0;
 
-    @Nullable
+    public static MajorsFragment newInstance() {
+        MajorsFragment majorsFragment = new MajorsFragment();
+        return majorsFragment;
+    }
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.major_main_view,container,false);
-        findView(rootView);
+    protected int getLayoutId() {
+        return R.layout.major_main_view;
+    }
+
+    @Override
+    protected void afterCreate(Bundle savedInstanceState) {
+        findView(mRootView);
         initialize();
-        return rootView;
     }
 
     private void findView(View rootView) {

@@ -43,9 +43,10 @@ import java.util.List;
 /**
  * Created by bruce on 2016/1/1.
  */
-public class SchoolsFragment extends Fragment
+public class SchoolsFragment extends BaseFragment
     implements SchoolsView,RecyclerViewClickListener {
 
+    private static final String TAG = SchoolsFragment.class.getSimpleName();
     private static final int LOAD_DATA_SUCCESS = 0;
     private static final String TABLE_NAME = "school";
     public static SparseArray<Bitmap> sPhotoCache = new SparseArray<Bitmap>(1);
@@ -66,20 +67,32 @@ public class SchoolsFragment extends Fragment
     private SchoolsAdapter schoolsAdapter;
     private ProgressBar progressBar;
 
+    public static SchoolsFragment newInstance() {
+        Log.d(TAG,"create schoolFragment");
+        SchoolsFragment fragment = new SchoolsFragment();
+        return fragment;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.ll_school_mainview,container,false);
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+    }
 
-        findView(rootView);
+    @Override
+    protected int getLayoutId() {
+        return R.layout.ll_school_mainview;
+    }
+
+    @Override
+    protected void afterCreate(Bundle savedInstanceState) {
+        findView(mRootView);
         initialize();
         load(TABLE_NAME);
-        return rootView;
     }
 
     private void findView(View rootView){

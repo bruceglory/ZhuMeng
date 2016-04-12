@@ -18,7 +18,7 @@ android {
         }
     }
 
-    //ÎªÁË½â¾ö²¿·ÖµÚÈý·½¿âÖØ¸´´ò°üÁËMETA-INFµÄÎÊÌâ
+    //Îªï¿½Ë½ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½META-INFï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     packagingOptions{
         exclude 'META-INF/LICENSE.txt'
         exclude 'META-INF/NOTICE.txt'
@@ -41,8 +41,8 @@ dependencies {
     }
 
     compile 'com.mikepenz:google-material-typeface:2.2.0.1.original@aar'
-    compile 'com.android.support:support-v4:21.0.3'
-    //avoscloud-sdk Îª LeanCloud»ù´¡°ü
+    compile 'com.android.support:support-v4:23.2.1'
+    //avoscloud-sdk Îª LeanCloudï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     compile 'cn.leancloud.android:avoscloud-sdk:v3.+'
     compile files('libs/jsoup-1.8.3.jar')
 }
