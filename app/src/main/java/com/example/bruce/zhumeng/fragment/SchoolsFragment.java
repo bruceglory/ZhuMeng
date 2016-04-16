@@ -1,86 +1,98 @@
 package com.example.bruce.zhumeng.fragment;
 
-import android.annotation.TargetApi;
-import android.app.ActivityOptions;
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.util.Pair;
-import android.util.SparseArray;
-import android.view.LayoutInflater;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.FindCallback;
-import com.example.bruce.zhumeng.SchoolDetailActivity;
 import com.example.bruce.zhumeng.R;
+import com.example.bruce.zhumeng.SchoolDetailActivity;
+import com.example.bruce.zhumeng.adapter.ListDropDownMenuAdapter;
 import com.example.bruce.zhumeng.adapter.SchoolsAdapter;
 import com.example.bruce.zhumeng.entities.School;
 import com.example.bruce.zhumeng.mvp.presenters.SchoolsPresenter;
 import com.example.bruce.zhumeng.mvp.views.SchoolsView;
 import com.example.bruce.zhumeng.utils.RecyclerViewClickListener;
+import com.example.bruce.zhumeng.views.custom_view.DropDownMenus;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
  * Created by bruce on 2016/1/1.
  */
 public class SchoolsFragment extends BaseFragment
-    implements SchoolsView,RecyclerViewClickListener {
+    implements SchoolsView,RecyclerViewClickListener,AdapterView.OnItemClickListener {
 
     private static final String TAG = SchoolsFragment.class.getSimpleName();
-    private static final int LOAD_DATA_SUCCESS = 0;
-    private static final String TABLE_NAME = "school";
-    public static SparseArray<Bitmap> sPhotoCache = new SparseArray<Bitmap>(1);
 
-    public final static String EXTRA_MOVIE_ID               = "movie_id";
-    public final static String EXTRA_MOVIE_LOCATION         = "view_location";
+    private List<View> popupViews = new ArrayList<>();
+    private String headers[] = {"地区", "学科", "类别","筛选"};
+    private Activity activity;
+    private static final int LOAD_DATA_SUCCESS = 0;
+    private static final String TABLE_NAME = "school8";
+
     public final static String SHARED_ELEMENT_COVER         = "cover";
     public final static String EXTRA_MOVIE_POSITION         = "movie_position";
     private int currentPosition = 0;
     private int loadCount = 0;
     private List<School> schoolInfos;
-    private Handler schoolsHandler;
+    private SchoolsHandler schoolsHandler;
     private SchoolsPresenter schoolsPresenter;
 
-    private Toolbar toolbar;
+    private ListView cityView;
+    private ListView sexView;
+    private ListView majorView;
+    private ListView filterView;
+    ListDropDownMenuAdapter citysAdapter;
+    ListDropDownMenuAdapter sexsAdapter;
+    ListDropDownMenuAdapter majorsAdapter;
+    ListDropDownMenuAdapter filterAdapter;
+
+
     private RecyclerView recyclerView;
     private LinearLayoutManager linearLayoutManager;
     private SchoolsAdapter schoolsAdapter;
-    private ProgressBar progressBar;
+
+    private ProgressBar   progressBar;
+    private DropDownMenus dropDownMenus;
+
+    private String[] citys = {"jiangxi","fujian","liaoning","beijing","shanghai","nanjing","guizhou","xian"};
+    private String[] sexs = {"female","male"};
+    private String[] majors = {"like","tiyu","wenke","yixue"};
+    private String[] filters = {"fjdkgj","etekge","te","tejnd"};
 
     public static SchoolsFragment newInstance() {
-        Log.d(TAG,"create schoolFragment");
-        SchoolsFragment fragment = new SchoolsFragment();
-        return fragment;
+        Log.d("zhang","create schoolFragment");
+        return new SchoolsFragment();
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        activity = (Activity) context;
     }
 
     @Override
@@ -90,16 +102,17 @@ public class SchoolsFragment extends BaseFragment
 
     @Override
     protected void afterCreate(Bundle savedInstanceState) {
+        Log.d("zhang","schoolsFragment afterCreate");
         findView(mRootView);
         initialize();
         load(TABLE_NAME);
     }
 
     private void findView(View rootView){
-        toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
-        toolbar.setTitle(R.string.drawer_school);
-        recyclerView = (RecyclerView) rootView.findViewById(R.id.my_recycler_view);
-        progressBar  = (ProgressBar) rootView.findViewById(R.id.activity_schools_progress);
+        recyclerView = new RecyclerView(activity);
+        //recyclerView = (RecyclerView) rootView.findViewById(R.id.my_recycler_view);
+       // progressBar  = (ProgressBar) rootView.findViewById(R.id.activity_schools_progress);
+        dropDownMenus = (DropDownMenus) rootView.findViewById(R.id.dropDownMenu);
     }
 
     private void initialize(){
@@ -108,37 +121,88 @@ public class SchoolsFragment extends BaseFragment
     }
 
     private void initializeData() {
-        schoolsHandler = new Handler(){
-            @Override
-            public void handleMessage(Message msg) {
-                if(msg.what == LOAD_DATA_SUCCESS) {
-                    recyclerView.getAdapter().notifyDataSetChanged();
-                }
-            }
-        };
+        schoolsHandler = new SchoolsHandler(this);
         schoolInfos = new ArrayList<>();
         schoolsPresenter = new SchoolsPresenter();
         schoolsPresenter.attachView(this);
     }
 
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        if(parent == cityView) {
+            dropDownMenus.setTabText(citys[position]);
+            citysAdapter.setCheckItemPosition(position);
+        } else if(parent == majorView) {
+            dropDownMenus.setTabText(majors[position]);
+            majorsAdapter.setCheckItemPosition(position);
+        } else if(parent == sexView) {
+            dropDownMenus.setTabText(sexs[position]);
+            sexsAdapter.setCheckItemPosition(position);
+        } else if(parent == filterView) {
+            dropDownMenus.setTabText(filters[position]);
+            filterAdapter.setCheckItemPosition(position);
+        }
+
+        dropDownMenus.closeMenu();
+    }
+
     private void initializeRecycler() {
+
+        cityView = new ListView(activity);
+        citysAdapter = new ListDropDownMenuAdapter(activity, Arrays.asList(citys));
+        cityView.setDividerHeight(0);
+        cityView.setAdapter(citysAdapter);
+        sexView = new ListView(activity);
+        sexsAdapter = new ListDropDownMenuAdapter(activity,Arrays.asList(sexs));
+        sexView.setDividerHeight(0);
+        sexView.setAdapter(sexsAdapter);
+        majorView = new ListView(activity);
+        majorsAdapter = new ListDropDownMenuAdapter(activity, Arrays.asList(majors));
+        majorView.setDividerHeight(0);
+        majorView.setAdapter(majorsAdapter);
+
+        filterView = new ListView(activity);
+        filterAdapter = new ListDropDownMenuAdapter(activity,Arrays.asList(filters));
+        filterView.setDividerHeight(0);
+        filterView.setAdapter(filterAdapter);
+
+        cityView.setOnItemClickListener(this);
+        sexView.setOnItemClickListener(this);
+        majorView.setOnItemClickListener(this);
+        filterView.setOnItemClickListener(this);
+
+        popupViews.add(cityView);
+        popupViews.add(sexView);
+        popupViews.add(majorView);
+        popupViews.add(filterView);
+
         recyclerView.setHasFixedSize(true);
         linearLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
+
 
         recyclerView.addOnScrollListener(recyclerViewScrollListener);
         schoolsAdapter = new SchoolsAdapter(schoolInfos);
         schoolsAdapter.setRecyclerListListener(this);
         recyclerView.setAdapter(schoolsAdapter);
+
+        TextView contentView = new TextView(activity);
+        contentView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup
+                .LayoutParams.MATCH_PARENT));
+        contentView.setText("fdkjg");
+        contentView.setGravity(Gravity.CENTER);
+        contentView.setTextSize(TypedValue.COMPLEX_UNIT_SP,20);
+
+        dropDownMenus.setDropDownMenu(Arrays.asList(headers),popupViews,recyclerView);
     }
 
     public  void load(String tableName) {
         AVQuery<AVObject> query = new AVQuery<>(tableName);
-        if(currentPosition+3 >= schoolInfos.size() && schoolInfos.size()<10) {
+        if(currentPosition+3 >= schoolInfos.size() && schoolInfos.size()<600) {
             loadCount++;
-            query.whereGreaterThan("schoolId", (loadCount - 1) * 3);
-            query.whereLessThan("schoolId", loadCount * 3 + 1);
-            query.orderByAscending("schoolId");
+            query.whereGreaterThan("ranking", (loadCount - 1) * 3);
+            query.whereLessThan("ranking", loadCount * 3 + 1);
+            query.orderByAscending("ranking");
 
             query.findInBackground(new FindCallback<AVObject>() {
                 @Override
@@ -156,23 +220,27 @@ public class SchoolsFragment extends BaseFragment
 
         }
 
-
     }
 
     public List<School> parseAVObject(List<AVObject> list) {
         Log.d("zhang", "parseAvobject");
         List<School> schools = new ArrayList<School>();
         for(int i=0;i<list.size();i++) {
-
-            int id = list.get(i).getInt("schoolId");
-            String schoolName = list.get(i).getString("SchoolName");
+            AVObject school = list.get(i);
+            int ranking = school.getInt("ranking");
+            String schoolName = school.getString("college_name");
             Log.d("zhang","schoolName="+schoolName);
-            String pictureUrl = list.get(i).getAVFile("photo").getUrl();
-            boolean _985 = list.get(i).getBoolean("985");
-            boolean _211 = list.get(i).getBoolean("211");
 
-            School schoolInfo = new School(id, schoolName, pictureUrl, _985, _211);
-            schools.add(schoolInfo);
+            if(school.has("back_cover")) {
+                JSONObject back_cover = school.getJSONObject("back_cover");
+                try {
+                    String pictureUrl = back_cover.getString("url");
+                    School schoolInfo = new School(ranking, schoolName, pictureUrl);
+                    schools.add(schoolInfo);
+                } catch (JSONException e) {
+                    Log.d("zhang","exception+"+e);
+                }
+            }
         }
         return schools;
     }
@@ -218,56 +286,8 @@ public class SchoolsFragment extends BaseFragment
         Intent schoolDetailActivityIntent = new Intent (
                 getActivity(), SchoolDetailActivity.class);
 
-//        int movieID = schoolsAdapter.getMovieList().get(schoolPosition).getId();
-//        schoolDetailActivityIntent.putExtra(EXTRA_MOVIE_ID, movieID);
-//        schoolDetailActivityIntent.putExtra(EXTRA_MOVIE_POSITION, schoolPosition);
-//
-//        ImageView schoolPicture = (ImageView) touchedView.findViewById(R.id.school_picture);
-//        BitmapDrawable bitmapDrawable = (BitmapDrawable) schoolPicture.getDrawable();
-//
-//        if (schoolsAdapter.isSchoolReady(schoolPosition) || bitmapDrawable != null) {
-//
-//            sPhotoCache.put(0, bitmapDrawable.getBitmap());
-//
-//
-//                startDetailActivityBySharedElements(touchedView, schoolPosition,
-//                        schoolDetailActivityIntent);
-//
-//
-//        } else {
-//
-//            Toast.makeText(getActivity(), getString(R.string.activity_movies_message_loading_film),
-//                    Toast.LENGTH_SHORT).show();
-//        }
+
         getActivity().startActivity(schoolDetailActivityIntent);
-    }
-
-    private void startDetailActivityByAnimation(View touchedView,
-                                                int touchedX, int touchedY, Intent movieDetailActivityIntent) {
-
-        int[] touchedLocation = {touchedX, touchedY};
-        int[] locationAtScreen = new int [2];
-        touchedView.getLocationOnScreen(locationAtScreen);
-
-        int finalLocationX = locationAtScreen[0] + touchedLocation[0];
-        int finalLocationY = locationAtScreen[1] + touchedLocation[1];
-
-        int [] finalLocation = {finalLocationX, finalLocationY};
-        movieDetailActivityIntent.putExtra(EXTRA_MOVIE_LOCATION,
-                finalLocation);
-
-        startActivity(movieDetailActivityIntent);
-    }
-
-    @SuppressWarnings("unchecked")
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private void startDetailActivityBySharedElements(View touchedView,
-                                                     int moviePosition, Intent movieDetailActivityIntent) {
-
-        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(
-                getActivity(), new Pair<>(touchedView, SHARED_ELEMENT_COVER + moviePosition));
-
-        getActivity().startActivity(movieDetailActivityIntent, options.toBundle());
     }
 
     private RecyclerView.OnScrollListener recyclerViewScrollListener =
@@ -292,4 +312,22 @@ public class SchoolsFragment extends BaseFragment
                     }
                 }
             };
+
+    static class SchoolsHandler extends Handler {
+        WeakReference<SchoolsFragment> mSchoolsFragment;
+
+        public SchoolsHandler(SchoolsFragment schoolsFragment) {
+            mSchoolsFragment = new WeakReference<>(schoolsFragment);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            final SchoolsFragment schoolsFragment = mSchoolsFragment.get();
+            if(schoolsFragment != null) {
+                if(msg.what == LOAD_DATA_SUCCESS) {
+                    schoolsFragment.schoolsAdapter.notifyDataSetChanged();
+                }
+            }
+        }
+    }
 }

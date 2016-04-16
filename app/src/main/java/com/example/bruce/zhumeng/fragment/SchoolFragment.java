@@ -161,10 +161,8 @@ public class SchoolFragment extends Fragment {
             String schoolName = list.get(i).getString("SchoolName");
             Log.d("zhang","schoolName="+schoolName);
             String pictureUrl = list.get(i).getAVFile("photo").getUrl();
-            boolean _985 = list.get(i).getBoolean("985");
-            boolean _211 = list.get(i).getBoolean("211");
 
-            School schoolInfo = new School(id, schoolName, pictureUrl, _985, _211);
+            School schoolInfo = new School(id, schoolName, pictureUrl);
             schoolInfos.add(schoolInfo);
         }
     }

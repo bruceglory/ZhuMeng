@@ -10,16 +10,13 @@ public class School implements Serializable {
     private int id;
     private String schoolName;
     private String pictureUrl;
-    private boolean _985;
-    private boolean _211;
     private boolean schoolReady;
 
-    public School(int id,String schoolName,String pictureUrl,boolean _985,boolean _211) {
+    public School(int id,String schoolName,String pictureUrl) {
         this.id = id;
         this.schoolName = schoolName;
         this.pictureUrl = pictureUrl;
-        this._985 = _985;
-        this._211 = _211;
+
     }
 
     public int getId() {
@@ -34,13 +31,6 @@ public class School implements Serializable {
         return pictureUrl;
     }
 
-    public boolean is_985() {
-        return _985;
-    }
-
-    public boolean is_211() {
-        return _211;
-    }
 
     public void setSchoolReady(boolean schoolReady) {
 

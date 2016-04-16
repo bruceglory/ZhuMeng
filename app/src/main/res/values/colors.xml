@@ -4,4 +4,12 @@
     <color name="ColorPrimary">#4caf50</color>
     <color name="ColorPrimaryDark">#388e3c</color>
     <color name="ColorAccent">#c8e6e9</color>
+
+    <color name="white">#ffffff</color>
+    <color name="gray">#7dc0c0c0</color>
+    <color name="drop_down_selected">#7B1FA2</color>
+    <color name="drop_down_unselected">#111111</color>
+    <color name="mask_color">#7dc0c0c0</color>
+    <color name="check_bg">#f2f2f2</color>
+    <color name="un_press_color">#9C27B0</color>
 </resources>

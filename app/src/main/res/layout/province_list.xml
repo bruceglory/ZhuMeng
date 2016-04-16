@@ -10,6 +10,7 @@
         android:layout_height="wrap_content"
         android:textSize="@dimen/material_text_caption"
         android:paddingLeft="@dimen/once_tap"
+        android:paddingRight="@dimen/once_tap"
         android:paddingTop="@dimen/once_tap"
         android:paddingBottom="@dimen/once_tap"
         android:textColor="#2196F3"

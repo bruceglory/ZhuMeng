@@ -1,77 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_marginTop="2dp"
+              android:orientation="vertical">
+    <com.example.bruce.zhumeng.views.custom_view.DropDownMenus
+        android:id="@+id/dropDownMenu"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:ddmMenuTextSize="13sp"
+        app:ddmTextSelectedColor="@color/drop_down_selected"
+        app:ddmTextUnselectedColor="@color/drop_down_unselected"
+        app:ddmDividerColor="@color/gray"
+        app:ddmUnderlineColor="@color/gray"
+        app:ddmSelectedIcon="@mipmap/drop_down_selected_icon"
+        app:ddmUnselectedIcon="@mipmap/drop_down_unselected_icon"
+        app:ddmMaskViewColor="@color/mask_color"
+        app:ddmBackgroundColor="@color/white"
+
+        />
+    <!--
+<LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginTop="2dp"
-    android:orientation="vertical">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="36dp"
-        android:background="#bdbdbd"
-        android:orientation="horizontal">
-        <TextView
-            android:id="@+id/ll_spinner_province"
-            android:layout_width="0dp"
-            android:layout_weight="2"
-            android:layout_height="match_parent"
-            android:clickable="true"
-            android:text="province"
-            android:gravity="center"
-            />
-
-        <TextView
-            android:layout_width="1dp"
-            android:layout_height="8dp"
-            android:background="#666666"
-            android:layout_gravity="center"
-            android:gravity="center"/>
-
-        <TextView
-            android:id="@+id/ll_spinner_city"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:clickable="true"
-            android:text="city"
-            android:gravity="center"
-            />
-        <TextView
-            android:layout_width="1dp"
-            android:layout_height="8dp"
-            android:background="#666666"
-            android:layout_gravity="center"
-            android:gravity="center"/>
-
-        <TextView
-            android:id="@+id/ll_spinner_category"
-            android:layout_width="0dp"
-            android:layout_weight="2"
-            android:clickable="true"
-            android:text="category"
-            android:gravity="center"
-            android:layout_height="match_parent"/>
-        <TextView
-            android:layout_width="1dp"
-            android:layout_height="8dp"
-            android:background="#666666"
-            android:layout_gravity="center"
-            android:gravity="center"/>
-        <TextView
-            android:id="@+id/ll_spinner_filter"
-            android:layout_width="0dp"
-            android:layout_weight="2"
-            android:clickable="true"
-            android:text="filter"
-            android:gravity="center"
-            android:layout_height="match_parent"/>
-    </LinearLayout>
+    android:layout_height="36dp"
+    android:background="#bdbdbd"
+    android:orientation="horizontal">
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#9e9e9e"
+        android:id="@+id/ll_spinner_province"
+        android:layout_width="0dp"
+        android:layout_weight="2"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:text="province"
+        android:gravity="center"
+        />
+
+    <TextView
+        android:layout_width="1dp"
+        android:layout_height="8dp"
+        android:background="#666666"
         android:layout_gravity="center"
         android:gravity="center"/>
-    <include layout="@layout/my_recycler_view"/>
+
+    <TextView
+        android:id="@+id/ll_spinner_city"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="2"
+        android:clickable="true"
+        android:text="city"
+        android:gravity="center"
+        />
+    <TextView
+        android:layout_width="1dp"
+        android:layout_height="8dp"
+        android:background="#666666"
+        android:layout_gravity="center"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/ll_spinner_category"
+        android:layout_width="0dp"
+        android:layout_weight="2"
+        android:clickable="true"
+        android:text="category"
+        android:gravity="center"
+        android:layout_height="match_parent"/>
+    <TextView
+        android:layout_width="1dp"
+        android:layout_height="8dp"
+        android:background="#666666"
+        android:layout_gravity="center"
+        android:gravity="center"/>
+    <TextView
+        android:id="@+id/ll_spinner_filter"
+        android:layout_width="0dp"
+        android:layout_weight="2"
+        android:clickable="true"
+        android:text="filter"
+        android:gravity="center"
+        android:layout_height="match_parent"/>
+</LinearLayout>
+<TextView
+    android:layout_width="match_parent"
+    android:layout_height="1dp"
+    android:background="#9e9e9e"
+    android:layout_gravity="center"
+    android:gravity="center"/>
+
+<include layout="@layout/my_recycler_view"/>
 
     <ProgressBar
         android:id="@+id/activity_schools_progress"
@@ -82,4 +101,5 @@
         android:visibility="gone"
         style="?android:attr/progressBarStyleLarge"
         />
+        -->
 </LinearLayout>

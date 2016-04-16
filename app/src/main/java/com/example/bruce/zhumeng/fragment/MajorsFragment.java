@@ -37,7 +37,6 @@ public class MajorsFragment extends BaseFragment implements ExpandableListView.O
     private static final int LOAD_MAJOR_DETAIL_CATTGORY_SUCCESS = 1;
     public static final int  LOAD_MAJOR_SUCCESS = 2;
 
-    private Toolbar toolbar;
     private ExpandableListView expandableListView;
     private MajorCategoryAdapter adapter;
 
@@ -49,8 +48,7 @@ public class MajorsFragment extends BaseFragment implements ExpandableListView.O
     private int clickPosition = 0;
 
     public static MajorsFragment newInstance() {
-        MajorsFragment majorsFragment = new MajorsFragment();
-        return majorsFragment;
+        return new MajorsFragment();
     }
 
     @Override
@@ -65,8 +63,6 @@ public class MajorsFragment extends BaseFragment implements ExpandableListView.O
     }
 
     private void findView(View rootView) {
-        toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
-        toolbar.setTitle(R.string.drawer_major);
         expandableListView = (ExpandableListView) rootView.findViewById(R.id.major_list);
     }
 

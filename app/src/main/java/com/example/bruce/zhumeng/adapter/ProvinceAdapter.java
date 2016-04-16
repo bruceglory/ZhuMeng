@@ -1,6 +1,7 @@
 package com.example.bruce.zhumeng.adapter;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,12 +52,10 @@ public class ProvinceAdapter extends BaseAdapter {
             provinceHolder = (ProvinceHolder)convertView.getTag();
         }
         provinceHolder.provinceTV.setText(province.get(position));
-        provinceHolder.provinceTV.setTextColor(context.getResources()
-                .getColor(R.color.colorPrimary));
+        provinceHolder.provinceTV.setTextColor(ContextCompat.getColor(context,R.color.colorPrimary));
         if(currentSelectedView == position) {
             Log.d("zhang","currentselected="+currentSelectedView);
-            provinceHolder.provinceTV.setTextColor(context.getResources()
-                    .getColor(R.color.ColorPrimary));
+            provinceHolder.provinceTV.setTextColor(ContextCompat.getColor(context,R.color.colorPrimary));
         }
         return convertView;
     }
@@ -65,7 +64,7 @@ public class ProvinceAdapter extends BaseAdapter {
         currentSelectedView = currentView;
 
     }
-    public class ProvinceHolder {
+    class ProvinceHolder {
         private TextView provinceTV;
 
         public ProvinceHolder(View view) {

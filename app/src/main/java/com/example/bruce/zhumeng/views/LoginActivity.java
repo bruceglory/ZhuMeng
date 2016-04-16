@@ -27,7 +27,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public static final int REGISTER_SUCC_RES = 2;
     public static final int SIGN_SUCC_RES = 3;
     private UserLoginPresenter userLoginPresenter;
-    private Handler handler;
     private TextView usernameTv;
     private EditText usernameEt;
     private EditText passwordEt;
@@ -40,23 +39,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
-        //AVOSCloud.initialize(this, "FFS0rxJBqrbQJ44HGKXrB4o0", "bsIgWjlXtj549JfqyWQ3ngdM");
         init();
     }
 
     private void init() {
-//        handler = new Handler() {
-//            @Override
-//            public void handleMessage(Message msg) {
-//                int what = msg.what;
-//                switch (what) {
-//                    case INVALID_EMAIL_ADDRESS:
-//                        Toast.makeText(getApplicationContext(),"invalid email address",Toast
-//                                .LENGTH_LONG).show();
-//                        break;
-//                }
-//            }
-//        };
+
         userLoginPresenter = new UserLoginPresenter(this);
         usernameTv = (TextView) findViewById(R.id.login_username);
         usernameEt = (EditText) findViewById(R.id.username_edit);
@@ -148,23 +135,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 //        });
 //    }
 //
-//    private void signIn() {
-//        AVUser.logInInBackground(emailEt.getText().toString(), passwordEt.getText().toString(), new
-//                LogInCallback<AVUser>() {
-//            @Override
-//            public void done(AVUser avUser, AVException e) {
-//                if(e == null) {
-//                    Log.d("zhang","login success");
-//                    Toast.makeText(getApplicationContext(), R.string.register_success_mes,
-//                            Toast.LENGTH_SHORT);
-//                    LoginActivity.this.setResult(SIGN_SUCC_RES);
-//                    LoginActivity.this.finish();
-//                } else {
-//                    Log.d("zhang","login failed "+ "error code " + e.getCode());
-//                }
-//            }
-//        });
-//    }
 
 
     @Override

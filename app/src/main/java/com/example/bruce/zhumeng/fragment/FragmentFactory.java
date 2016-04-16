@@ -10,9 +10,9 @@ import android.util.SparseArray;
 public class FragmentFactory {
 
     private static final String TAG = FragmentFactory.class.getSimpleName();
-    private static SparseArray<BaseFragment> fragmentArrayMap= new SparseArray<>();
+    private SparseArray<BaseFragment> fragmentArrayMap= new SparseArray<>();
 
-    public static BaseFragment createFragment(int position) {
+    public BaseFragment createFragment(int position) {
         BaseFragment fragment;
         fragment = fragmentArrayMap.get(position);
         if(fragment == null) {

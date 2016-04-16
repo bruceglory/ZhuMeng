@@ -46,78 +46,68 @@ public class MainActivity extends AppCompatActivity {
     private final int SCORE_FM  = 3; //scoreFragment
     private final int PSY_FM    = 4; //psyFragment
 
-    private Toolbar       toolbar;
+    private Toolbar        toolbar;
     private AccountHeader headerResult;
-    private Drawer        result;
+    private Drawer         result;
     private LinearLayout  scoreProvinceSelected;
     private SecondaryDrawerItem drawerAccount1 = new SecondaryDrawerItem().
             withName(R.string.drawer_account1).withIdentifier(5);
-    private BaseFragment currentFragment;
 
-
-    SchoolsFragment schoolsFragment;
-    MajorsFragment majorsFragment;
+    FragmentFactory      fragmentFactory = new FragmentFactory();
+    SchoolsFragment    schoolsFragment;
+    MajorsFragment     majorsFragment;
     ScoreLinesFragment scoreLinesFragment;
-    PsysFragment psysFragment;
+    PsysFragment       psysFragment;
+
+    private int currentFragmentPosition = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d(TAG, "activity onCreate");
+        Log.d("zhang", "activity onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         AVOSCloud.initialize(this, "FFS0rxJBqrbQJ44HGKXrB4o0", "bsIgWjlXtj549JfqyWQ3ngdM");
 
         if (savedInstanceState != null) {
+            Log.d("zhang","savedInstanceStace != null");
             FragmentManager fm = getSupportFragmentManager();
-            schoolsFragment = (SchoolsFragment)fm.findFragmentByTag
+            schoolsFragment = (SchoolsFragment) fm.findFragmentByTag
                     ("school");
-            majorsFragment = (MajorsFragment)fm.findFragmentByTag
+            majorsFragment = (MajorsFragment) fm.findFragmentByTag
                     ("major");
-            scoreLinesFragment = (ScoreLinesFragment)fm.findFragmentByTag
+            scoreLinesFragment = (ScoreLinesFragment) fm.findFragmentByTag
                     ("scoreLine");
-            psysFragment = (PsysFragment)fm.findFragmentByTag("psy");
+            psysFragment = (PsysFragment) fm.findFragmentByTag("psy");
             FragmentTransaction transaction = fm.beginTransaction();
             List<Fragment> list = fm.getFragments();
-            if(list == null) {
-                Log.d("bruce","list == null");
+            if (list == null) {
+                Log.d("bruce", "list == null");
             } else {
-                for(Fragment f : list) {
-                    Log.d("bruce","f="+f);
+                for (Fragment f : list) {
+                    Log.d("bruce", "f=" + f);
                 }
             }
 
-            if(null != schoolsFragment){
+            if (null != schoolsFragment) {
                 transaction.show(schoolsFragment);
+                currentFragmentPosition = SCHOOL_FM;
             }
-            if(null != majorsFragment) {
+            if (null != majorsFragment) {
                 transaction.hide(majorsFragment);
             }
-            if(null != scoreLinesFragment) {
+            if (null != scoreLinesFragment) {
                 transaction.hide(scoreLinesFragment);
             }
-            if(null != psysFragment) {
+            if (null != psysFragment) {
                 transaction.hide(psysFragment);
             }
 
             transaction.commit();
         }
-//        else {
-//            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-//
-//            schoolsFragment = (SchoolsFragment)FragmentFactory.createFragment(SCHOOL_FM);
-//            transaction.add(R.id.frame_container, schoolsFragment, "school");
-//            majorsFragment = (MajorsFragment)FragmentFactory.createFragment(MAJOR_FM);
-//            transaction.add(R.id.frame_container, majorsFragment, "major");
-//            scoreLinesFragment = (ScoreLinesFragment)FragmentFactory.createFragment(SCORE_FM);
-//            transaction.add(R.id.frame_container,scoreLinesFragment,"scoreLine");
-//            psysFragment = (PsysFragment)FragmentFactory.createFragment(PSY_FM);
-//            transaction.add(R.id.frame_container,psysFragment,"psy");
-//            transaction.show(schoolsFragment).hide(majorsFragment).hide(scoreLinesFragment).hide
-//                    (psysFragment).commit();
-//        }
-//        currentFragment = schoolsFragment;
+        Log.d("zhang","schoolFragment="+schoolsFragment);
         setUpToolbar();
         setUpDrawer();
+        //initFragment();
     }
 
     @Override
@@ -145,6 +135,13 @@ public class MainActivity extends AppCompatActivity {
             drawerAccount1.withName(R.string.drawer_account1).withIcon(GoogleMaterial.Icon.gmd_alarm_off);
             result.updateItem(drawerAccount1);
         }
+        if(result != null) {
+            if (currentFragmentPosition == 0) {
+                result.setSelection(SCHOOL_FM);
+            } else {
+                result.setSelection(currentFragmentPosition);
+            }
+        }
 
     }
 
@@ -157,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Log.d(TAG,"activity onsaveInstanceState");
+        Log.d(TAG, "activity onsaveInstanceState");
     }
 
     private void setUpToolbar() {
@@ -167,8 +164,6 @@ public class MainActivity extends AppCompatActivity {
             toolbar.setTitle("school");
         }
         scoreProvinceSelected = (LinearLayout) findViewById(R.id.score_province_select);
-//        toolbar.setTitle("");
-
     }
 
     private void setUpDrawer() {
@@ -202,19 +197,19 @@ public class MainActivity extends AppCompatActivity {
                     public boolean onItemClick(View view, int i, IDrawerItem iDrawerItem) {
 
                         if (iDrawerItem == drawerSchool) {
-                            switchFragment(SCHOOL_FM, false,"school");
+                            switchFragment(SCHOOL_FM, false, "school");
                             toolbar.setTitle("School");
                         }
                         if (iDrawerItem == drawerMajor) {
-                            switchFragment(MAJOR_FM, false,"major");
+                            switchFragment(MAJOR_FM, false, "major");
                             toolbar.setTitle("Major");
                         }
                         if (iDrawerItem == drawerScore) {
-                            switchFragment(SCORE_FM, true,"scoreLine");
+                            switchFragment(SCORE_FM, true, "scoreLine");
                             toolbar.setTitle("ScoreLine");
                         }
                         if (iDrawerItem == drawerPsy) {
-                            switchFragment(PSY_FM, false,"psy");
+                            switchFragment(PSY_FM, false, "psy");
                             toolbar.setTitle("Psy");
                         }
                         if (iDrawerItem == drawerAccount1) {
@@ -240,60 +235,57 @@ public class MainActivity extends AppCompatActivity {
      *
      * @param position        fragment position
      * @param provinceVisible scoreLinesFragment provinceSelected isVisible
+     * @param tag             fragment tag
      */
-    public void switchFragment(int position, boolean provinceVisible,String tag) {
+    public void switchFragment(int position, boolean provinceVisible, String tag) {
+        currentFragmentPosition = position;
         FragmentManager fm = getSupportFragmentManager();
-
         FragmentTransaction transaction = fm.beginTransaction();
         List<Fragment> list = fm.getFragments();
-        if(list != null) {
+        if (list != null) {
             for (Fragment f : list) {
                 transaction.hide(f);
             }
         }
         switch (position) {
             case SCHOOL_FM:
-                if(schoolsFragment == null){
-                    schoolsFragment = new SchoolsFragment();
-                    transaction.add(R.id.frame_container,schoolsFragment,tag).commit();
+                Log.d("zhang","fragment position="+position);
+                Log.d("zhang","schoolfragment2 = "+schoolsFragment);
+                if (schoolsFragment == null) {
+                    schoolsFragment = (SchoolsFragment)fragmentFactory.createFragment(SCHOOL_FM);
+                    transaction.add(R.id.frame_container, schoolsFragment, tag).commit();
                 } else {
                     transaction.show(schoolsFragment).commit();
                 }
                 break;
             case MAJOR_FM:
-                if(majorsFragment == null) {
-                    majorsFragment = new MajorsFragment();
-                    transaction.add(R.id.frame_container,majorsFragment,tag).commit();
+                if (majorsFragment == null) {
+                    majorsFragment = (MajorsFragment)fragmentFactory.createFragment(MAJOR_FM);
+                    transaction.add(R.id.frame_container, majorsFragment, tag).commit();
                 } else {
                     transaction.show(majorsFragment).commit();
                 }
                 break;
             case SCORE_FM:
-                if(scoreLinesFragment == null) {
-                    scoreLinesFragment = new ScoreLinesFragment();
-                    transaction.add(R.id.frame_container,scoreLinesFragment,tag).commit();
+                if (scoreLinesFragment == null) {
+                    scoreLinesFragment = (ScoreLinesFragment)fragmentFactory.createFragment
+                            (SCORE_FM);
+                    transaction.add(R.id.frame_container, scoreLinesFragment, tag).commit();
 
                 } else {
                     transaction.show(scoreLinesFragment).commit();
                 }
                 break;
             case PSY_FM:
-                if(psysFragment == null) {
-                    psysFragment = new PsysFragment();
-                    transaction.add(R.id.frame_container,psysFragment,tag).commit();
+                if (psysFragment == null) {
+                    psysFragment = (PsysFragment)fragmentFactory.createFragment(PSY_FM);
+                    transaction.add(R.id.frame_container, psysFragment, tag).commit();
                 } else {
                     transaction.show(psysFragment).commit();
                 }
                 break;
         }
-//        if (currentFragment != fragment) {
-//            if (!fragment.isAdded()) {
-//                transaction.hide(currentFragment).add(R.id.frame_container, fragment,tag).commit();
-//            } else {
-//                transaction.hide(currentFragment).show(fragment).commit();
-//            }
-//            currentFragment = (BaseFragment)fragment;
-//        }
+
         if (provinceVisible) {
             scoreProvinceSelected.setVisibility(View.VISIBLE);
         } else {
@@ -352,6 +344,11 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        if(currentFragmentPosition == 4) {
+            if(psysFragment.onBackPressed()){
+                return;
+            }
+        }
         if (result != null && result.isDrawerOpen()) {
             result.closeDrawer();
         } else {

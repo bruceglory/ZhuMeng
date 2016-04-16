@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="DropDownMenus">
+        <attr name="ddmUnderlineColor" format="color"/>
+        <attr name="ddmDividerColor" format="color"/>
+        <attr name="ddmBackgroundColor" format="color"/>
+        <attr name="ddmTextSelectedColor" format="color"/>
+        <attr name="ddmTextUnselectedColor" format="color"/>
+        <attr name="ddmMenuTextSize" format="dimension"/>
+        <attr name="ddmMaskViewColor" format="color"/>
+        <attr name="ddmSelectedIcon" format="reference"/>
+        <attr name="ddmUnselectedIcon" format="reference"/>
+    </declare-styleable>
+</resources>

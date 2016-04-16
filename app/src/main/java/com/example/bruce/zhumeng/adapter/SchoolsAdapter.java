@@ -58,14 +58,14 @@ public class SchoolsAdapter extends RecyclerView.Adapter<SchoolViewHolder> {
     @Override
     public void onBindViewHolder(final SchoolViewHolder holder, final int position) {
 
-        School selectedMovie = schoolList.get(position);
+        School selectedSchool = schoolList.get(position);
 
-        holder.schoolName.setText(selectedMovie.getSchoolName());
+        holder.schoolName.setText(selectedSchool.getSchoolName());
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
             holder.schoolPicture.setTransitionName("cover" + position);
 
-        String posterURL = selectedMovie.getPictureUrl();
+        String posterURL = selectedSchool.getPictureUrl();
 
         Picasso.with(context)
                 .load(posterURL)

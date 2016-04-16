@@ -31,4 +31,5 @@
         <item name="android:paddingRight">@dimen/once_tap</item>
         <item name="android:paddingBottom">@dimen/once_tap</item>
     </style>
+
 </resources>
