@@ -147,7 +147,7 @@ public class MajorCategoryAdapter extends BaseExpandableListAdapter {
                         childAdapter = majorDetailCategoryAdapter;
                         if(majorDetailCategory.getMajorList() == null) {
                                 Log.d("zhang","load major data") ;
-                                AVQuery<AVObject> majorQuery = new AVQuery<>("Major");
+                                AVQuery<AVObject> majorQuery = new AVQuery<>("major6");
                                 majorQuery.whereEqualTo("major_category_id",groupPosition+1);
                                 majorQuery.whereEqualTo("major_detail_category_id",childPosition+1);
                                 majorQuery.orderByAscending("major_id");
@@ -157,10 +157,11 @@ public class MajorCategoryAdapter extends BaseExpandableListAdapter {
                                         List<Major> majorList = new ArrayList<Major>();
                                         if(e == null) {
                                             for(AVObject major : list) {
-                                                majorList.add(new Major(major.getInt
-                                                        ("major_detail_category_id"),major.getInt
-                                                        ("major_id"),major.getString
-                                                        ("major_name")));
+                                                Major mMajor = new Major(major.getInt("major_detail_category_id"),
+                                                        major.getInt("major_id"),major.getString("major_name"));
+                                                mMajor.setMajorCourse(major.getString("major_course"));
+                                                mMajor.setMajorOverview(major.getString("major_overview"));
+                                                majorList.add(mMajor);
                                             }
                                             for(Major ma : majorList) {
                                                 Log.d("zhang","major name = "+ma.getMajorName());

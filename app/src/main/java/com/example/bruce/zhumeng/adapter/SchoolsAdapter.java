@@ -66,22 +66,25 @@ public class SchoolsAdapter extends RecyclerView.Adapter<SchoolViewHolder> {
             holder.schoolPicture.setTransitionName("cover" + position);
 
         String posterURL = selectedSchool.getPictureUrl();
+        if (posterURL.equals("no_picture")) {
+            holder.schoolPicture.setImageResource(R.drawable.img_defaultpicture_school);
+        } else {
+            Picasso.with(context)
+                    .load(posterURL)
+                    .fit().centerCrop()
+                    .into(holder.schoolPicture, new Callback() {
+                        @Override
+                        public void onSuccess() {
 
-        Picasso.with(context)
-                .load(posterURL)
-                .fit().centerCrop()
-                .into(holder.schoolPicture, new Callback() {
-                    @Override
-                    public void onSuccess() {
+                            //schoolList.get(position).setSchoolReady(true);
+                        }
 
-                        schoolList.get(position).setSchoolReady(true);
-                    }
+                        @Override
+                        public void onError() {
 
-                    @Override
-                    public void onError() {
-
-                    }
-                });
+                        }
+                    });
+        }
     }
 
     public boolean isSchoolReady(int position) {

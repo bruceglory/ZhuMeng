@@ -30,8 +30,8 @@
     <string name="default_province">北京市</string>
 
     <!-- major detail info-->
-    <string name="major_intro_tilte">专业概况</string>
-    <string name="major_des_title">专业解读</string>
+    <string name="major_course">主修课程</string>
+    <string name="major_overview">专业解读</string>
 
 
     <!-- login -->

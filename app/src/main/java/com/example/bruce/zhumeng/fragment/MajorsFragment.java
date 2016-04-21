@@ -42,7 +42,6 @@ public class MajorsFragment extends BaseFragment implements ExpandableListView.O
 
     private List<MajorCategory> categoryList = new ArrayList<>();
     private List<MajorDetailCategory> detailCategoryList = new ArrayList<>();
-    private List<MajorDetailCategory> detailCategoryList2 = new ArrayList<>();
 
     private Handler majorsHandler;
     private int clickPosition = 0;
@@ -68,30 +67,7 @@ public class MajorsFragment extends BaseFragment implements ExpandableListView.O
 
     private void initialize() {
         initializeData();
-        List<Major> majorlist = new ArrayList<>();
-        majorlist.add(new Major(1,1,"jkgeogeyio"));
-        majorlist.add(new Major(1, 2, "jkfgejigejokgo"));
-        majorlist.add(new Major(1, 3, "jgi3g"));
-        MajorDetailCategory majorDetailCategory1 = new MajorDetailCategory(1,5,"jhifge");
-        majorDetailCategory1.setMajorList(majorlist);
-        detailCategoryList.add(new MajorDetailCategory(1, 1, "zhexue"));
-        detailCategoryList.add(new MajorDetailCategory(1,2,"zhengzhixue"));
-        detailCategoryList.add(new MajorDetailCategory(1,3,"gekjge"));
-        detailCategoryList.add(new MajorDetailCategory(1,4,"jgoiejg"));
-
-        detailCategoryList.add(majorDetailCategory1);
-
-        detailCategoryList2.add(new MajorDetailCategory(2, 1, "gjek"));
-        detailCategoryList2.add(new MajorDetailCategory(2, 2, "gjeigjh"));
-
-        MajorCategory majorCategory1 = new MajorCategory(1,"zhexue");
-        majorCategory1.setMajorDetailCategoryList(detailCategoryList);
-        MajorCategory majorCategory2 = new MajorCategory(2,"caizhengxue");
-        majorCategory2.setMajorDetailCategoryList(detailCategoryList2);
-        //categoryList.add(majorCategory1);
-        //categoryList.add(majorCategory2);
         adapter = new MajorCategoryAdapter(getActivity(),categoryList,majorsHandler);
-
         expandableListView.setAdapter(adapter);
         expandableListView.setOnGroupClickListener(this);
         adapter.setOnChildTreeViewClickListener(this);
@@ -202,9 +178,12 @@ public class MajorsFragment extends BaseFragment implements ExpandableListView.O
 
     @Override
     public void onClickPosition(int parentPosition, int groupPosition, int childPosition) {
-        Log.d("zhang","onClickPosition parentPosition="+parentPosition+"gp="+groupPosition
+        Log.d("MajorsFragment","onClickPosition parentPosition="+parentPosition+"gp="+groupPosition
         +"cp="+childPosition);
-        Intent majorFragmentIntent = new Intent(getActivity(), MajorDetailActivity.class);
-        getActivity().startActivity(majorFragmentIntent);
+        //Log.d("MajorsFragment","majorCourse"+detailCategoryList.get(groupPosition).getMajorList().get(childPosition).getMajorCourse());
+        Major clickMajor = detailCategoryList.get(groupPosition).getMajorList().get(childPosition);
+        Intent majorDetailActivityIntent = new Intent(getActivity(), MajorDetailActivity.class);
+        majorDetailActivityIntent.putExtra("major",clickMajor);
+        getActivity().startActivity(majorDetailActivityIntent);
     }
 }

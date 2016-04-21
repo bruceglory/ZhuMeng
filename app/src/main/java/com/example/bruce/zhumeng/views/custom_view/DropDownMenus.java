@@ -42,7 +42,8 @@ public class DropDownMenus extends LinearLayout {
     private int selectedIcon;
     private int unselectedIcon;
 
-    private int currentTabPosition = -1;
+    private int    currentTabPosition = -1;
+    private String currentTabText     = "";
 
     public DropDownMenus(Context context) {
         super(context, null);
@@ -111,7 +112,8 @@ public class DropDownMenus extends LinearLayout {
 
         //init maskView
         maskView = new View(getContext());
-        maskView.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
+        maskView.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout
+                .LayoutParams.MATCH_PARENT));
         maskView.setBackgroundColor(maskViewColor);
         maskView.setOnClickListener(new OnClickListener() {
             @Override
@@ -129,7 +131,15 @@ public class DropDownMenus extends LinearLayout {
 
         //init popupMenuView;
         for (int i = 0; i < popupViews.size(); i++) {
-            popupViews.get(i).setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            if (i == 0 || i == 2) {
+                DisplayMetrics dm = getResources().getDisplayMetrics();
+                int dispalyHeight = dm.heightPixels;
+                popupViews.get(i).setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (
+                        dispalyHeight) / 2));
+            } else {
+                popupViews.get(i).setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT));
+            }
             popupMenuView.addView(popupViews.get(i), i);
         }
 
@@ -173,6 +183,7 @@ public class DropDownMenus extends LinearLayout {
                     closeMenu();
                 } else {
                     if (currentTabPosition == -1) {
+                        //menu is closing
                         popupMenuView.setVisibility(View.VISIBLE);
                         popupMenuView.setAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.ddm_popupview_in));
                         maskView.setVisibility(VISIBLE);
@@ -203,7 +214,15 @@ public class DropDownMenus extends LinearLayout {
     public void setTabText(String text) {
         if (currentTabPosition != -1) {
             ((TextView) tabMenuView.getChildAt(currentTabPosition)).setText(text);
+            currentTabText = text;
+        } else {
+            currentTabText = "不限";
         }
+    }
+
+    public String getTabText() {
+        return currentTabText;
+
     }
 
     public void closeMenu() {
@@ -211,9 +230,9 @@ public class DropDownMenus extends LinearLayout {
             ((TextView) tabMenuView.getChildAt(currentTabPosition)).setTextColor(textUnselectedColor);
             ((TextView) tabMenuView.getChildAt(currentTabPosition)).setCompoundDrawablesWithIntrinsicBounds(null,
                     null, getResources().getDrawable(unselectedIcon), null);
-            popupMenuView.setAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.ddm_maskview_out));
+            popupMenuView.setAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.ddm_popupview_out));
             popupMenuView.setVisibility(GONE);
-            maskView.setAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.ddm_maskview_out));
+            maskView.setAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.ddm_maskview_out));
             maskView.setVisibility(GONE);
             currentTabPosition = -1;
         }
@@ -221,6 +240,7 @@ public class DropDownMenus extends LinearLayout {
 
     private int dpTpPx(float value) {
         DisplayMetrics dm = getResources().getDisplayMetrics();
+        int dispalyHeight = dm.heightPixels;
         return (int) (TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, dm) + 0.5);
     }
 

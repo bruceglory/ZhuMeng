@@ -88,7 +88,6 @@
                     android:layout_marginLeft="16dp"
                     android:layout_width="72dp"
                     android:layout_height="72dp"
-                    android:src="@drawable/school_badge"
                     />
 
                 <TextView
@@ -104,6 +103,7 @@
                     />
 
                 <TextView
+                    android:id="@+id/school_type"
                     android:layout_width="match_parent"
                     android:layout_height="24dp"
                     android:gravity="start"
@@ -125,60 +125,61 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="24dp"
+                        android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         >
                         <TextView
-                            android:id="@+id/school_belong"
+
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:textSize="14sp"
                             android:text="@string/school_belong"
                             />
                         <TextView
+                            android:id="@+id/school_belong"
                             android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                             android:textSize="14sp"
-                            android:text="jiaoyubu"
                             />
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="24dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="32dp"
                         android:orientation="horizontal"
                         >
                         <TextView
-                            android:id="@+id/school_address"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:textSize="14sp"
                             android:text="@string/school_address"
                             />
                         <TextView
+                            android:id="@+id/school_address"
                             android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
+                            android:singleLine="false"
                             android:textSize="14sp"
-                            android:text="beijing"
                             />
                     </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="24dp"
+                        android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         >
                         <TextView
-                            android:id="@+id/school_tel"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:textSize="14sp"
                             android:text="@string/school_tel"
                             />
                         <TextView
+                            android:id="@+id/school_tel"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:textSize="14sp"
-                            android:text="15840813989"
                             />
                     </LinearLayout>
                 </LinearLayout>
@@ -291,6 +292,42 @@
                     android:layout_marginTop="16dp"
                     />
             </RelativeLayout>
+
+            <TextView
+                android:id="@+id/college_description1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="12"
+                android:textSize="13sp"
+                android:lineSpacingMultiplier="1.3"
+                android:ellipsize="end"
+                android:layout_marginTop="24dp"
+                android:layout_marginRight="32dp"
+                android:layout_marginLeft="8dp"
+
+                />
+
+            <TextView
+                android:id="@+id/description_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:textSize="14sp"
+                android:textColor="@color/md_green_700"
+                android:layout_gravity="center"
+                android:layout_marginTop="16dp"
+                android:drawableRight="@mipmap/drop_down_unselected_icon"
+                android:text="查看更多"
+                />
+            <TextView
+                android:layout_height="1dp"
+                android:layout_width="match_parent"
+                android:background="@color/md_grey_300"
+                android:layout_alignLeft="@id/college_description1"
+                android:layout_marginRight="16dp"
+                android:layout_below="@id/college_description1"
+                android:layout_marginTop="16dp"
+                />
 
             <RelativeLayout
                 android:layout_height="wrap_content"
