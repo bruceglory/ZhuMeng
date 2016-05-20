@@ -51,13 +51,11 @@ public class SchoolsFragment extends BaseFragment
     private static final String TAG = SchoolsFragment.class.getSimpleName();
 
     private List<View> popupViews = new ArrayList<>();
-    private String headers[] = {"地区", "学科", "类别","筛选"};
+    private String headers[] = {"地区", "类别","筛选"};
     private Activity activity;
     private static final int LOAD_DATA_SUCCESS = 0;
     private static final String TABLE_NAME = "school8";
 
-    public final static String SHARED_ELEMENT_COVER         = "cover";
-    public final static String EXTRA_MOVIE_POSITION         = "movie_position";
     private int currentPosition = 0;
     private int loadCount = 0;
     private List<School> schoolInfos;
@@ -154,11 +152,11 @@ public class SchoolsFragment extends BaseFragment
             sexsAdapter.setCheckItemPosition(position);
             currentSexId = position;
         } else if(parent == majorView) {
-            dropDownMenus.setTabText(position == 0 ? headers[2] : majors[position]);
+            dropDownMenus.setTabText(position == 0 ? headers[1] : majors[position]);
             majorsAdapter.setCheckItemPosition(position);
             currentMajorId = position;
         } else if(parent == filterView) {
-            dropDownMenus.setTabText(position == 0 ? headers[3] : filters[position]);
+            dropDownMenus.setTabText(position == 0 ? headers[2] : filters[position]);
             filterAdapter.setCheckItemPosition(position);
             currentFilterId = position;
         }
@@ -194,7 +192,6 @@ public class SchoolsFragment extends BaseFragment
         filterView.setOnItemClickListener(this);
 
         popupViews.add(cityView);
-        popupViews.add(sexView);
         popupViews.add(majorView);
         popupViews.add(filterView);
 
@@ -208,34 +205,35 @@ public class SchoolsFragment extends BaseFragment
         schoolsAdapter.setRecyclerListListener(this);
         recyclerView.setAdapter(schoolsAdapter);
 
-        dropDownMenus.setDropDownMenu(Arrays.asList(headers),popupViews,recyclerView);
+        if(dropDownMenus != null)
+            dropDownMenus.setDropDownMenu(Arrays.asList(headers),popupViews,recyclerView);
     }
 
-    public  void load(String tableName) {
-        AVQuery<AVObject> query = new AVQuery<>(tableName);
-        if(currentPosition+3 >= schoolInfos.size() && schoolInfos.size()<600) {
-            loadCount++;
-            query.whereGreaterThan("ranking", (loadCount - 1) * 3);
-            query.whereLessThan("ranking", loadCount * 3 + 1);
-            query.orderByAscending("ranking");
-
-            query.findInBackground(new FindCallback<AVObject>() {
-                @Override
-                public void done(List<AVObject> school, AVException e) {
-                    if (e == null) {
-                        schoolInfos.addAll(parseAVObject(school));
-                        if(school.size()>0){
-                            schoolsHandler.sendEmptyMessage(LOAD_DATA_SUCCESS);
-                        }
-                    } else {
-                        Log.d("zhang", "error:" + e.getMessage());
-                    }
-                }
-            });
-
-        }
-
-    }
+//    public  void load(String tableName) {
+//        AVQuery<AVObject> query = new AVQuery<>(tableName);
+//        if(currentPosition+3 >= schoolInfos.size() && schoolInfos.size()<600) {
+//            loadCount++;
+//            query.whereGreaterThan("ranking", (loadCount - 1) * 3);
+//            query.whereLessThan("ranking", loadCount * 3 + 1);
+//            query.orderByAscending("ranking");
+//
+//            query.findInBackground(new FindCallback<AVObject>() {
+//                @Override
+//                public void done(List<AVObject> school, AVException e) {
+//                    if (e == null) {
+//                        schoolInfos.addAll(parseAVObject(school));
+//                        if(school.size()>0){
+//                            schoolsHandler.sendEmptyMessage(LOAD_DATA_SUCCESS);
+//                        }
+//                    } else {
+//                        Log.d("zhang", "error:" + e.getMessage());
+//                    }
+//                }
+//            });
+//
+//        }
+//
+//    }
 
     private void loadDataFromProvince(int provinceId,int sexId,int majorId,int filterId) {
         AVQuery<AVObject> query = new AVQuery<>("school8");
@@ -278,13 +276,14 @@ public class SchoolsFragment extends BaseFragment
         Log.d("zhang", "parseAvobject");
         List<School> schools = new ArrayList<>();
 
+        String objectId = "";
         String iconUrl ="-";
         String type = "-";
         String belongTo = "-";
         String address = "-";
         String tel = "-";
 
-        int doctorNumber = 0;
+        int doctorNumber ;
         int masterNumber = 0;
         int importantMajorNumber = 0;
 
@@ -294,13 +293,14 @@ public class SchoolsFragment extends BaseFragment
             AVObject school = list.get(i);
 
             if(school.has("college_icon")) {
-                JSONObject college_cion = school.getJSONObject("college_icon");
+                JSONObject college_icon = school.getJSONObject("college_icon");
                 try {
-                    iconUrl = college_cion.getString("url");
+                    iconUrl = college_icon.getString("url");
                 } catch (JSONException e) {
-
+                    Log.d("SchoolsFragment","JsonException");
                 }
             }
+            objectId = school.getObjectId();
             type = school.getString("college_type");
             belongTo = school.getString("belong_to");
             address = school.getString("address");
@@ -331,6 +331,7 @@ public class SchoolsFragment extends BaseFragment
             }
             School schoolInfo = new School(ranking, schoolName, pictureUrl);
 
+            schoolInfo.setObjectId(objectId);
             schoolInfo.setIconUrl(iconUrl);
             schoolInfo.setType(type);
             schoolInfo.setAddress(address);

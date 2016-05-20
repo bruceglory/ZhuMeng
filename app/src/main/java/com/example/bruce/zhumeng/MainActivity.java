@@ -1,8 +1,14 @@
 package com.example.bruce.zhumeng;
 
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -13,11 +19,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.avos.avoscloud.AVOSCloud;
 import com.avos.avoscloud.AVUser;
-import com.example.bruce.zhumeng.fragment.BaseFragment;
 import com.example.bruce.zhumeng.fragment.FragmentFactory;
 import com.example.bruce.zhumeng.fragment.MajorsFragment;
 import com.example.bruce.zhumeng.fragment.PsysFragment;
@@ -34,6 +40,10 @@ import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
+import com.mikepenz.materialdrawer.util.AbstractDrawerImageLoader;
+import com.mikepenz.materialdrawer.util.DrawerImageLoader;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Transformation;
 
 import java.util.List;
 
@@ -59,24 +69,23 @@ public class MainActivity extends AppCompatActivity {
     ScoreLinesFragment scoreLinesFragment;
     PsysFragment       psysFragment;
 
+    private AvatarChangeReceiver avatarChangeLocalReceive;
+    private IProfile newProfile;
     private int currentFragmentPosition = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d("zhang", "activity onCreate");
+        Log.d(TAG, "activity onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         AVOSCloud.initialize(this, "FFS0rxJBqrbQJ44HGKXrB4o0", "bsIgWjlXtj549JfqyWQ3ngdM");
 
         if (savedInstanceState != null) {
-            Log.d("zhang","savedInstanceStace != null");
+            Log.d(TAG,"savedInstanceStace != null");
             FragmentManager fm = getSupportFragmentManager();
-            schoolsFragment = (SchoolsFragment) fm.findFragmentByTag
-                    ("school");
-            majorsFragment = (MajorsFragment) fm.findFragmentByTag
-                    ("major");
-            scoreLinesFragment = (ScoreLinesFragment) fm.findFragmentByTag
-                    ("scoreLine");
+            schoolsFragment = (SchoolsFragment) fm.findFragmentByTag("school");
+            majorsFragment = (MajorsFragment) fm.findFragmentByTag("major");
+            scoreLinesFragment = (ScoreLinesFragment) fm.findFragmentByTag("scoreLine");
             psysFragment = (PsysFragment) fm.findFragmentByTag("psy");
             FragmentTransaction transaction = fm.beginTransaction();
             List<Fragment> list = fm.getFragments();
@@ -104,10 +113,11 @@ public class MainActivity extends AppCompatActivity {
 
             transaction.commit();
         }
-        Log.d("zhang","schoolFragment="+schoolsFragment);
+        Log.d(TAG,"schoolFragment="+schoolsFragment);
         setUpToolbar();
         setUpDrawer();
-        //initFragment();
+        initDrawerImageLoader();
+        initAvatarReceiver();
     }
 
     @Override
@@ -116,11 +126,19 @@ public class MainActivity extends AppCompatActivity {
         //to determine if the user is logged in
         AVUser currentUser = AVUser.getCurrentUser();
         if (currentUser != null) {
-            IProfile newProfile = new ProfileDrawerItem().withName(currentUser.getUsername()).
-                    withEmail(currentUser.getEmail()).withIcon(R.drawable.person_image_empty)
-                    .withIdentifier(100);
             if (headerResult != null) {
-                headerResult.addProfiles(newProfile);
+                if(headerResult.getProfiles() == null || headerResult.getProfiles().size() == 0) {
+                    newProfile = new ProfileDrawerItem().withName(currentUser.getUsername())
+                            .withEmail(currentUser.getEmail())
+                            .withIdentifier(100);
+                    if(currentUser.getAVFile("avatar") != null) {
+                        String url = currentUser.getAVFile("avatar").getUrl();
+                        newProfile.withIcon(url);
+                    } else {
+                        newProfile.withIcon(R.drawable.person_image_empty);
+                    }
+                    headerResult.addProfiles(newProfile);
+                }
             }
             //show switch account drawer
             drawerAccount1.withName(R.string.drawer_account2).withIcon(GoogleMaterial.Icon.gmd_account_box);
@@ -142,19 +160,19 @@ public class MainActivity extends AppCompatActivity {
                 result.setSelection(currentFragmentPosition);
             }
         }
-
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        unregisterReceiver(avatarChangeLocalReceive);
         Log.d(TAG, "activity destory");
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Log.d(TAG, "activity onsaveInstanceState");
+        Log.d(TAG, "activity onSaveInstanceState");
     }
 
     private void setUpToolbar() {
@@ -186,7 +204,23 @@ public class MainActivity extends AppCompatActivity {
         headerResult = new AccountHeaderBuilder()
                 .withActivity(this)
                 .withHeaderBackground(R.drawable.image_nav_drawer_account_background)
+                .withSelectionListEnabledForSingleProfile(false)
+                .withOnAccountHeaderProfileImageListener(new AccountHeader.OnAccountHeaderProfileImageListener() {
+                    @Override
+                    public boolean onProfileImageClick(View view, IProfile profile, boolean current) {
+                        Log.d(TAG,"profile image click");
+                        Intent userInformationIntent = new Intent(MainActivity.this,UserInformationActivity.class);
+                        startActivity(userInformationIntent);
+                        return true;
+                    }
+
+                    @Override
+                    public boolean onProfileImageLongClick(View view, IProfile profile, boolean current) {
+                        return false;
+                    }
+                })
                 .build();
+
 
         result = new DrawerBuilder().withActivity(this)
                 .addDrawerItems(drawerSchool, drawerMajor, drawerScore, drawerPsy,
@@ -198,19 +232,19 @@ public class MainActivity extends AppCompatActivity {
 
                         if (iDrawerItem == drawerSchool) {
                             switchFragment(SCHOOL_FM, false, "school");
-                            toolbar.setTitle("School");
+                            toolbar.setTitle(getResources().getString(R.string.drawer_school));
                         }
                         if (iDrawerItem == drawerMajor) {
                             switchFragment(MAJOR_FM, false, "major");
-                            toolbar.setTitle("Major");
+                            toolbar.setTitle(getResources().getString(R.string.drawer_major));
                         }
                         if (iDrawerItem == drawerScore) {
                             switchFragment(SCORE_FM, true, "scoreLine");
-                            toolbar.setTitle("ScoreLine");
+                            toolbar.setTitle(getResources().getString(R.string.drawer_score));
                         }
                         if (iDrawerItem == drawerPsy) {
                             switchFragment(PSY_FM, false, "psy");
-                            toolbar.setTitle("Psy");
+                            toolbar.setTitle(getResources().getString(R.string.drawer_psy));
                         }
                         if (iDrawerItem == drawerAccount1) {
                             AVUser currentUser = AVUser.getCurrentUser();
@@ -221,13 +255,33 @@ public class MainActivity extends AppCompatActivity {
                             }
 
                         }
-
                         return false;
                     }
                 })
                 .withAccountHeader(headerResult)
                 .build();
         result.setSelection(1);
+    }
+
+    private void initAvatarReceiver() {
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("com.example.bruce.zhumeng.AVATAR_CHANGE");
+        avatarChangeLocalReceive = new AvatarChangeReceiver();
+        registerReceiver(avatarChangeLocalReceive,intentFilter);
+    }
+
+    private void initDrawerImageLoader() {
+        DrawerImageLoader.init(new AbstractDrawerImageLoader() {
+            @Override
+            public void set(ImageView imageView, Uri uri, Drawable placeholder) {
+                Picasso.with(imageView.getContext()).load(uri).placeholder(placeholder).into(imageView);
+            }
+
+            @Override
+            public void cancel(ImageView imageView) {
+                Picasso.with(imageView.getContext()).cancelRequest(imageView);
+            }
+        });
     }
 
     /**
@@ -249,8 +303,8 @@ public class MainActivity extends AppCompatActivity {
         }
         switch (position) {
             case SCHOOL_FM:
-                Log.d("zhang","fragment position="+position);
-                Log.d("zhang","schoolfragment2 = "+schoolsFragment);
+                Log.d(TAG,"fragment position="+position);
+                Log.d(TAG,"schoolFragment2 = "+schoolsFragment);
                 if (schoolsFragment == null) {
                     schoolsFragment = (SchoolsFragment)fragmentFactory.createFragment(SCHOOL_FM);
                     transaction.add(R.id.frame_container, schoolsFragment, tag).commit();
@@ -300,6 +354,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         AVUser.logOut();
+                        headerResult.removeProfileByIdentifier(100);
                         jumpLogin();
                     }
                 })
@@ -317,29 +372,7 @@ public class MainActivity extends AppCompatActivity {
     private void jumpLogin() {
         Intent accountIntent = new Intent(MainActivity.this, LoginActivity
                 .class);
-        startActivityForResult(accountIntent, 1);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        // getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+        startActivity(accountIntent);
     }
 
     @Override
@@ -355,4 +388,14 @@ public class MainActivity extends AppCompatActivity {
             super.onBackPressed();
         }
     }
+
+    class AvatarChangeReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.d(TAG,"onReceiver");
+            newProfile.withIcon(AVUser.getCurrentUser().getAVFile("avatar").getUrl());
+            headerResult.updateProfile(newProfile);
+        }
+    }
+
 }

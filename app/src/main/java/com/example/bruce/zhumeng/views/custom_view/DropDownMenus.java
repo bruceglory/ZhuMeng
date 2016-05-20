@@ -240,7 +240,6 @@ public class DropDownMenus extends LinearLayout {
 
     private int dpTpPx(float value) {
         DisplayMetrics dm = getResources().getDisplayMetrics();
-        int dispalyHeight = dm.heightPixels;
         return (int) (TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, dm) + 0.5);
     }
 

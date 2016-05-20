@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    >
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/user_information_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
+    </android.support.design.widget.AppBarLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:layout_marginTop="8dp"
+        android:orientation="vertical"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            >
+
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="8dp"
+                android:gravity="center_vertical"
+                android:textColor="@color/md_black_1000"
+                android:text="@string/avatar"
+                />
+
+            <ImageView
+                android:id="@+id/avatar"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="8dp"
+                android:contentDescription="@string/avatar"
+                android:src="@drawable/person_image_empty"
+                />
+        </RelativeLayout>
+
+        <include layout="@layout/divder_line"/>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="昵称"
+                android:textColor="@color/md_black_1000"
+                android:layout_alignParentStart="true"
+                />
+
+            <TextView
+                android:id="@+id/user_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                />
+
+        </RelativeLayout>
+
+        <include layout="@layout/divder_line"/>
+
+        <RelativeLayout
+            android:id="@+id/interest_rl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:visibility="gone"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="兴趣"
+                android:textColor="@color/md_black_1000"
+                android:layout_alignParentStart="true"
+                />
+            <TextView
+                android:id="@+id/interest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                />
+        </RelativeLayout>
+    </LinearLayout>
+</android.support.design.widget.CoordinatorLayout>
+

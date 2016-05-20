@@ -4,6 +4,7 @@
     android:id="@+id/divide_line"
     android:layout_width="match_parent"
     android:layout_height="1dp"
+    android:layout_margin="8dp"
     android:background="@color/md_grey_300"
     >
 </TextView>

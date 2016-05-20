@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    >
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/comment_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
+    </android.support.design.widget.AppBarLayout>
+
+    <ListView
+        android:id="@+id/comment_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="56dp"
+        android:layout_marginBottom="64dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        >
+    </ListView>
+
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@color/white"
+        android:elevation="8dp"
+        android:gravity="center"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp">
+            <EditText
+                android:id="@+id/comment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingEnd="24dp"
+                android:hint="@string/comment_edit_mes"
+                android:textSize="14sp"
+                />
+
+            <ImageButton
+                android:id="@+id/comment_send_button"
+                android:layout_width="24dp"
+                android:layout_alignEnd="@id/comment"
+                android:layout_alignBottom="@id/comment"
+                android:layout_marginBottom="8dp"
+                android:layout_height="wrap_content"
+                android:background="@mipmap/send"
+                android:contentDescription="@string/send_commnet"
+                />
+        </RelativeLayout>
+
+    </android.support.v7.widget.Toolbar>
+
+</android.support.design.widget.CoordinatorLayout>
+

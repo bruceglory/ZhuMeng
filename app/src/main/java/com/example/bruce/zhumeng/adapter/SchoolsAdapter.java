@@ -34,11 +34,6 @@ public class SchoolsAdapter extends RecyclerView.Adapter<SchoolViewHolder> {
         this.schoolList = schoolList;
     }
 
-    public List<School> getMovieList() {
-
-        return schoolList;
-    }
-
     public void setRecyclerListListener(RecyclerViewClickListener mRecyclerClickListener) {
         this.recyclerViewClickListener = mRecyclerClickListener;
     }

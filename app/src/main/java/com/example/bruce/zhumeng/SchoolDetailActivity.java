@@ -1,5 +1,9 @@
 package com.example.bruce.zhumeng;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -8,17 +12,23 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.avos.avoscloud.AVUser;
 import com.db.chart.model.LineSet;
 import com.db.chart.view.AxisController;
 import com.db.chart.view.ChartView;
 import com.db.chart.view.LineChartView;
 import com.example.bruce.zhumeng.entities.School;
+import com.example.bruce.zhumeng.views.LoginActivity;
 import com.mikepenz.materialize.MaterializeBuilder;
 import com.mikepenz.materialize.util.UIUtils;
 import com.squareup.picasso.Picasso;
@@ -49,10 +59,9 @@ public class SchoolDetailActivity extends AppCompatActivity {
 
     private TextView description;
     private TextView descriptionHint;
-    private TextView description2;
 
-    private CollapsingToolbarLayout collapsingToolbarLayout;
     private LinearLayout            schoolDetailInfo;
+    private TextView                 commentSend;
     private LineChartView           lineChartView;
 
     private School school;
@@ -61,9 +70,10 @@ public class SchoolDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.school_info_layout);
+       //getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         school = (School) getIntent().getSerializableExtra("school");
-//        Bundle schoolBundle = this.getIntent().getExtras();
-//        school = schoolBundle.getParcelable("school");
+//      Bundle schoolBundle = this.getIntent().getExtras();
+//      school = schoolBundle.getParcelable("school");
         Log.d("SchoolDetailActivity", "school=" + school + "school.name=" + school.getSchoolName() + school
                 .getAddress());
         findView();
@@ -74,6 +84,7 @@ public class SchoolDetailActivity extends AppCompatActivity {
     private void findView() {
         toolbar = (Toolbar) findViewById(R.id.school_info_toolbar);
         toolbar.setTitle(R.string.drawer_school);
+
         //基本信息
         schoolPicture = (ImageView) findViewById(R.id.school_picture);
         schoolIcon = (ImageView) findViewById(R.id.school_detail_info_badge);
@@ -93,16 +104,57 @@ public class SchoolDetailActivity extends AppCompatActivity {
         description = (TextView) findViewById(R.id.college_description1);
         descriptionHint = (TextView) findViewById(R.id.description_hint);
 
-
-        collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+        commentSend = (TextView) findViewById(R.id.send_comment);
         schoolDetailInfo = (LinearLayout) findViewById(R.id.school_detail_info);
-        lineChartView = (LineChartView) findViewById(R.id.school_score_line);
+
+        commentSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AVUser currentUser = AVUser.getCurrentUser();
+                if(currentUser != null) {
+                    Intent commentIntent = new Intent(SchoolDetailActivity.this, CommentActivity.class);
+                    commentIntent.putExtra("objectId",school.getObjectId());
+                    commentIntent.putExtra("databaseName","school8");
+                    startActivity(commentIntent);
+                } else {
+                    unAccountTip();
+                }
+            }
+        });
+//        schoolDetailInfo.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                Log.d("SchoolDetailActivity","onTouch");
+//                //InputMethodManager imm = (InputMethodManager) SchoolDetailActivity.this.getSystemService(Context.INPUT_METHOD_SERVICE);
+//                //commentSend.setCursorVisible(false);
+//                //imm.hideSoftInputFromInputMethod(commentSend.getWindowToken(),0);
+//                return true;
+//            }
+//        });
+        //lineChartView = (LineChartView) findViewById(R.id.school_score_line);
     }
 
+    private void unAccountTip() {
+        new AlertDialog.Builder(this).setMessage(R.string.unaccount_mes)
+                .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Intent accountIntent = new Intent(SchoolDetailActivity.this, LoginActivity.class);
+                        startActivity(accountIntent);
+                    }
+                })
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //do nothing
+                    }
+                })
+                .show();
+    }
     private void initialize() {
         setUpToolbar();
         setUpCollapsingToolbarLayout();
-        setUpLineChartView();
+        //setUpLineChartView();
         loadBackdrop();
         setIntroduce();
         //initializeStartAnimation();
@@ -116,7 +168,9 @@ public class SchoolDetailActivity extends AppCompatActivity {
         lp.height = lp.height + UIUtils.getStatusBarHeight(this);
         toolbar.setLayoutParams(lp);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if(getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
     }
 
     private void setUpCollapsingToolbarLayout() {
@@ -129,25 +183,25 @@ public class SchoolDetailActivity extends AppCompatActivity {
 
     }
 
-    private void setUpLineChartView() {
-
-        schoolScoreData.setDotsColor(getResources().getColor(R.color.md_red_300));
-        schoolScoreData.setThickness(5);
-        schoolScoreData.setColor(getResources().getColor(R.color.md_blue_grey_300));
-        schoolScoreData.beginAt(1);
-        schoolScoreData.endAt(5);
-        Paint paint = new Paint();
-        lineChartView.addData(schoolScoreData);
-        lineChartView.setXAxis(true);
-        lineChartView.setYAxis(true);
-        lineChartView.setAxisBorderValues(0, 750);
-        lineChartView.setAxisColor(getResources().getColor(R.color.md_blue_grey_300));
-        lineChartView.setGrid(ChartView.GridType.HORIZONTAL, paint);
-        lineChartView.setXLabels(AxisController.LabelPosition.OUTSIDE);
-        lineChartView.setYLabels(AxisController.LabelPosition.NONE);
-        lineChartView.setLabelsColor(getResources().getColor(R.color.md_blue_grey_300));
-        lineChartView.show();
-    }
+//    private void setUpLineChartView() {
+//
+//        schoolScoreData.setDotsColor(getResources().getColor(R.color.md_red_300));
+//        schoolScoreData.setThickness(5);
+//        schoolScoreData.setColor(getResources().getColor(R.color.md_blue_grey_300));
+//        schoolScoreData.beginAt(1);
+//        schoolScoreData.endAt(5);
+//        Paint paint = new Paint();
+//        lineChartView.addData(schoolScoreData);
+//        lineChartView.setXAxis(true);
+//        lineChartView.setYAxis(true);
+//        lineChartView.setAxisBorderValues(0, 750);
+//        lineChartView.setAxisColor(getResources().getColor(R.color.md_blue_grey_300));
+//        lineChartView.setGrid(ChartView.GridType.HORIZONTAL, paint);
+//        lineChartView.setXLabels(AxisController.LabelPosition.OUTSIDE);
+//        lineChartView.setYLabels(AxisController.LabelPosition.NONE);
+//        lineChartView.setLabelsColor(getResources().getColor(R.color.md_blue_grey_300));
+//        lineChartView.show();
+//    }
 
     private void loadBackdrop() {
         String picUrl = school.getPictureUrl();

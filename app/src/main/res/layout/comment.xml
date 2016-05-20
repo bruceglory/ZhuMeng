@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <TextView
+        android:id="@+id/username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:textSize="14sp"
+        />
+
+    <TextView
+        android:id="@+id/comment_mes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:textSize="14sp"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        >
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            />
+        <ImageButton
+            android:layout_width="16dp"
+            android:layout_height="wrap_content"
+            android:background="@mipmap/like"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="16dp"
+            android:contentDescription="@string/forget_password"
+            />
+    </RelativeLayout>
+</LinearLayout>

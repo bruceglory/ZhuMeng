@@ -51,7 +51,7 @@ public class ListDropDownMenuAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
         if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.item_default_drop_down, null);
+            convertView = LayoutInflater.from(context).inflate(R.layout.item_default_drop_down, parent,false);
             viewHolder = new ViewHolder(convertView);
             convertView.setTag(viewHolder);
         } else {

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/background_login"
+    android:background="@drawable/ruc_bg_174"
     >
 
     <RelativeLayout
@@ -33,7 +33,7 @@
             android:hint="@string/login_username_hint"
             android:layout_below="@id/login_email_input"
             android:singleLine="true"
-            android:inputType="text"/>
+            android:inputType="textEmailAddress"/>
         <!-- 密码 text -->
         <TextView
             android:id="@+id/login_password_input"
@@ -43,21 +43,42 @@
             android:layout_marginTop="3dp"
             android:text="@string/login_label_password"
             android:textSize="14sp"/>
-        <EditText
-            android:id="@+id/password_edit"
-            android:layout_width="fill_parent"
+
+        <RelativeLayout
+            android:id="@+id/password_relative"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/login_password_input"
-            android:password="true"
-            android:singleLine="true"
-            android:inputType="textPassword" />
+            >
+            <EditText
+                android:id="@+id/password_edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingEnd="24dp"
+                android:singleLine="true"
+                android:inputType="textPassword"
+                />
+
+            <ImageButton
+                android:id="@+id/password_forget"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignEnd="@id/password_edit"
+                android:layout_alignBottom="@id/password_edit"
+                android:layout_marginEnd="8dp"
+                android:padding="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="@mipmap/question"
+                android:contentDescription="@string/send_commnet"
+                />
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/login_username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:layout_below="@id/password_edit"
+            android:layout_below="@id/password_relative"
             android:text="@string/login_sign_username"
             android:textSize="14sp"
             android:visibility="gone"
@@ -71,21 +92,24 @@
             android:inputType="text"
             android:visibility="gone"
             />
+
+
         <!-- 登录button -->
         <Button
             android:id="@+id/signin_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/username_edit"
-            android:layout_alignRight="@id/password_edit"
-            android:text="@string/login_label_signin"
+            android:layout_below="@id/password_relative"
+            android:layout_alignEnd="@id/password_relative"
+            android:text="@string/login_label_sign_in"
              />
+        <!-- 注册button -->
         <Button
             android:id="@+id/register_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/username_edit"
-            android:layout_alignRight="@id/password_edit"
+            android:layout_alignEnd="@id/username_edit"
             android:text="@string/login_label_register"
             android:visibility="gone"
             />
@@ -95,26 +119,28 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-
         >
-        <TextView  android:id="@+id/register"
-                   android:text="@string/login_label_register"
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:layout_alignParentBottom="true"
-                   android:layout_alignParentLeft="true"
-                   android:paddingLeft="72dp"
-                   android:textSize="18sp"
-                   android:textColor="@color/md_white_1000" />
         <TextView
-            android:id="@+id/signin"
-            android:text="@string/login_label_signin"
+            android:id="@+id/register"
+            android:text="@string/login_label_register"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
+            android:padding="8dp"
+            android:layout_marginStart="72dp"
+            android:layout_alignParentStart="true"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:paddingRight="72dp"
+            android:textSize="18sp"
+            android:textColor="@color/md_white_1000" />
+        <TextView
+            android:id="@+id/signIn"
+            android:text="@string/login_label_sign_in"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:textSize="18sp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="72dp"
             android:textColor="@color/md_white_1000"
             />
 

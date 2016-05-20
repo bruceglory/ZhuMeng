@@ -18,8 +18,6 @@ import com.mikepenz.materialize.util.UIUtils;
  */
 public class MajorDetailActivity extends AppCompatActivity {
 
-    private static final int LOAD_INTRO_SUCC = 0;
-    private static final int LOAD_DES_SUCC   = 1;
     private Major major;
     private Toolbar  toolbar;
     private TextView majorCourse;
@@ -59,7 +57,9 @@ public class MajorDetailActivity extends AppCompatActivity {
         lp.height = lp.height + UIUtils.getStatusBarHeight(this);
         toolbar.setLayoutParams(lp);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if(getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
     }
 
     private void setUpCollapsingToolbarLayout() {

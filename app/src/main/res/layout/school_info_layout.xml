@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    >
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
@@ -82,7 +85,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 >
-
                 <ImageView
                     android:id="@+id/school_detail_info_badge"
                     android:layout_marginLeft="16dp"
@@ -297,6 +299,7 @@
                 android:id="@+id/college_description1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+
                 android:maxLines="12"
                 android:textSize="13sp"
                 android:lineSpacingMultiplier="1.3"
@@ -326,12 +329,14 @@
                 android:layout_alignLeft="@id/college_description1"
                 android:layout_marginRight="16dp"
                 android:layout_below="@id/college_description1"
+                android:elevation="0.1dp"
                 android:layout_marginTop="16dp"
                 />
 
+            <!--
             <RelativeLayout
                 android:layout_height="wrap_content"
-                android:layout_width="match_parent"
+                android:layout_width="180dp"
                 android:paddingTop="24dp"
                 android:gravity="center"
                 >
@@ -344,20 +349,50 @@
                     android:layout_marginRight="24dp"
 
                         />
+
+                <TextView
+                    android:layout_height="1dp"
+                    android:layout_width="match_parent"
+                    android:background="@color/md_grey_300"
+                    android:layout_alignLeft="@id/school_score_line"
+                    android:layout_marginRight="16dp"
+                    android:layout_below="@id/school_score_line"
+                    android:layout_marginTop="16dp"
+                    />
+
+            </RelativeLayout>
+         -->
+
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp">
+
+                <ListView
+                    android:id="@+id/comment_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                </ListView>
+
+                <TextView
+                    android:id="@+id/send_comment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingEnd="8dp"
+                    android:clickable="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="16dp"
+                    android:textSize="14sp"
+                    android:layout_below="@id/comment"
+                    android:drawableEnd="@mipmap/send"
+                    android:text="@string/comment_edit_mes"
+                    />
+
             </RelativeLayout>
 
-
         </LinearLayout>
-
     </android.support.v4.widget.NestedScrollView>
-    <!--
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/floating_action_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:clickable="true"
-        app:layout_anchor="@id/appbar"
-        app:layout_anchorGravity="bottom|right|end" />
-    -->
 </android.support.design.widget.CoordinatorLayout>
+

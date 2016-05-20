@@ -38,13 +38,55 @@
     <string name="login_label_username">账号</string>
     <string name="login_username_hint">邮箱或手机号码</string>
     <string name="login_label_password">密码</string>
-    <string name="login_label_signin">登录</string>
+    <string name="login_label_sign_in">登录</string>
     <string name="login_label_register">注册</string>
     <string name="login_sign_username">用户名</string>
 
-    <string name="register_success_mes">注册成功</string>
+    <!-- reset password -->
+    <string name="forget_password">忘记密码？</string>
+    <string name="reset_password_hint">重置链接将发送到你的邮箱</string>
+    <string name="reset_account_mes">邮箱</string>
+    <string name="reset_password">重置</string>
+    <string name="reset_success">发送重置邮件成功</string>
+    <string name="reset_failed">发送重置邮件失败</string>
 
+    <string name="register_success_mes">注册成功</string>
     <string name="confirm_back_mes">确认退出当前账号</string>
     <string name="confirm">确定</string>
     <string name="cancel">取消</string>
+
+    <!-- unAccount tip -->
+    <string name="unaccount_mes">您还未登录，去登录？</string>
+
+    <!-- login tip -->
+    <string name="login_account_or_password_error">账号或密码错误</string>
+    <string name="login_account_null_error">账号不能为空</string>
+    <string name="login_password_null_error">密码不能为空</string>
+    <string name="login_username_null_error">用户名不能为空</string>
+    <string name="login_account_invaild">无效账号</string>
+    <string name="email_taken_mes">该邮箱已被注册</string>
+
+    <!-- comment mes -->
+    <string name="comment_edit_mes">添加评论</string>
+    <string name="send_commnet">发送评论</string>
+    <string name="send_comment_tip">发送内容不能为空</string>
+
+    <!-- time format -->
+    <string name="minute_time">%1$d分钟前</string>
+    <string name="hour_time">%1$d小时前</string>
+    <string name="day_time">%1$d小时前</string>
+    <string name="yesterday">昨天</string>
+    <string name="the_day_before_yesterday">前天</string>
+    <string name="unKnow">未知</string>
+    <string name="year_month_day">%1$d年%2$d月%3$d日</string>
+
+    <!-- avatar -->
+    <string name="user_information">个人信息</string>
+    <string name="edit_user_information">编辑个人信息</string>
+    <string name="avatar">头像</string>
+    <string name="interest">兴趣</string>
+    <string name="sex">性别</string>
+    <string name="change_avatar">修改头像</string>
+
+    <string name="done">done</string>
 </resources>
